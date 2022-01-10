@@ -15,7 +15,7 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.splashscreen);
         getSupportActionBar().hide();
 
-        MediaPlayer music = MediaPlayer.create(SplashScreen.this, R.raw.splashmusic);
+        MediaPlayer music = MediaPlayer.create(SplashScreen.this, R.raw.trimmedsplashmusic);
         music.start();
 
         new Handler().postDelayed(new Runnable() {
@@ -25,7 +25,7 @@ public class SplashScreen extends AppCompatActivity {
                 music.stop();
                 finish();
             }
-        },3000);
+        },5000);
 
     }
 }

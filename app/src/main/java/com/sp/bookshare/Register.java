@@ -37,7 +37,7 @@ public class Register extends AppCompatActivity {
 
         back=findViewById(R.id.back_register);
         name=findViewById(R.id.name_id);
-        email=findViewById(R.id.email_id);
+        email=findViewById(R.id.email_id3);
         phone=findViewById(R.id.phone_id);
         password=findViewById(R.id.password_id);
         register=findViewById(R.id.button_register);
@@ -126,13 +126,13 @@ public class Register extends AppCompatActivity {
 
                                         // redirect to log in activity
                                     } else {
-                                        Toast.makeText(Register.this,"Failed to register2! Try again!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Register.this,"Failed to register! Please try again!", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 }
                             });
                         }else {
-                            Toast.makeText(Register.this,"Failed to register! Email is already being used!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Register.this,"Failed to register! Please try again!", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
