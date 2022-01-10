@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "913310350929",
+    "project_id": "bookshare-74cd0",
+    "storage_bucket": "bookshare-74cd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913310350929:android:d635d0febe6100d5b40270",
+        "android_client_info": {
+          "package_name": "com.sp.bookshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913310350929-duknu30i6m468tcfp3ha3pj8a1onrg7p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiUy-pFRcbOIVbsKXG-NNvg5EqI0SjpLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913310350929-duknu30i6m468tcfp3ha3pj8a1onrg7p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
