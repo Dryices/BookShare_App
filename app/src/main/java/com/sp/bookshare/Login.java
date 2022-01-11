@@ -108,7 +108,7 @@ public class Login extends AppCompatActivity {
                             if(user.isEmailVerified()) {
                                 //redirect to home page
                                 progressBar.setVisibility(View.GONE);
-                                intent = new Intent(Login.this, Profile.class);
+                                intent = new Intent(Login.this, MainActivity.class);
                                 startActivity(intent);
                             }else {
                                 user.sendEmailVerification();
