@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -29,8 +30,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class ProfileFragment extends Fragment {
 
-    private TextView name, email, phone;
-    private Button logout;
+    private TextView name, email, phone,logout;
     private Intent intent;
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-// Inflate the layout for this fragment
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
 
     }
@@ -88,12 +88,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         name=view.findViewById(R.id.profile_name);
         email=view.findViewById(R.id.profile_email);
         phone=view.findViewById(R.id.profile_phone);
-        logout=view.findViewById(R.id.button_logout);
+        logout=view.findViewById(R.id.logout_id);
         logout.setOnClickListener(onLogout);
 
         user= FirebaseAuth.getInstance().getCurrentUser();
