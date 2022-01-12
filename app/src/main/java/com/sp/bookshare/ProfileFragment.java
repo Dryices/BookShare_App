@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -122,9 +123,35 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(getActivity(),"An error has occurred!",Toast.LENGTH_LONG).show();
             }
         });
+        // initiating the tabhost
+        TabHost tabhost = (TabHost) view.findViewById(R.id.tabhost_id);
 
+        // setting up the tab host
+        tabhost.setup();
 
+        // Code for adding Tab 1 to the tabhost
+        TabHost.TabSpec spec = tabhost.newTabSpec("Listings");
+        spec.setContent(R.id.Listings);
 
+        // setting the name of the tab 1 as "Tab One"
+        spec.setIndicator("Listings");
+
+        // adding the tab to tabhost
+        tabhost.addTab(spec);
+
+        // Code for adding Tab 2 to the tabhost
+        spec = tabhost.newTabSpec("Ratings");
+        spec.setContent(R.id.Ratings);
+
+        // setting the name of the tab 1 as "Tab Two"
+        spec.setIndicator("Ratings");
+        tabhost.addTab(spec);
+
+        // Code for adding Tab 3 to the tabhost
+        spec = tabhost.newTabSpec("About");
+        spec.setContent(R.id.About);
+        spec.setIndicator("About");
+        tabhost.addTab(spec);
     }
 
     private View.OnClickListener onLogout = new View.OnClickListener() {

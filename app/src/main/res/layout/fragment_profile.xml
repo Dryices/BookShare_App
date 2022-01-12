@@ -23,7 +23,7 @@
         android:id="@+id/profile_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/ic_baseline_person_24"
         app:civ_border_color="@color/black"
         app:civ_border_width="2dp"
@@ -34,14 +34,14 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="300dp"
-        android:layout_height="160dp"
+        android:layout_width="304dp"
+        android:layout_height="138dp"
         android:layout_row="0"
         android:layout_rowWeight="1"
         android:layout_column="0"
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:cardUseCompatPadding="true"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="Input"
-                android:textSize="18dp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/profile_email"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="Input"
-                android:textSize="18dp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/profile_phone"
@@ -79,10 +79,110 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="Input"
-                android:textSize="18dp" />
+                android:textSize="15dp" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <TabHost
+        android:id="@+id/tabhost_id"
+        android:layout_width="408dp"
+        android:layout_height="471dp"
+        android:layout_marginTop="7dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--Tab widget to select the tab-->
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--FrameLayout which contains the data of the activity-->
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!--for tab 1-->
+                <LinearLayout
+                    android:id="@+id/Listings"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFC0CB"
+                    android:orientation="vertical">
+
+                    <!--Text View for applying the text to the tab-->
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="180dp"
+                                android:text="Listing Page"
+                                android:textColor="#000"
+                                android:textSize="32sp" />
+                        </LinearLayout>
+                    </ScrollView>
+
+                </LinearLayout>
+
+                <!--for tab 2-->
+                <LinearLayout
+                    android:id="@+id/Ratings"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#90ee90"
+                    android:orientation="vertical">
+
+                    <!--Text View for applying the text to the tab-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="180dp"
+                        android:text="Ratings Page"
+                        android:textColor="#000"
+                        android:textSize="32sp" />
+                </LinearLayout>
+
+                <!--for tab 3-->
+                <LinearLayout
+                    android:id="@+id/About"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#add8e6"
+                    android:orientation="vertical">
+
+                    <!--Text View for applying the text to the tab-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="180dp"
+                        android:text="About Page"
+                        android:textColor="#000"
+                        android:textSize="32sp" />
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
