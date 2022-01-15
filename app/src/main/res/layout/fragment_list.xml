@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ListFragment">
 
 
@@ -11,33 +11,78 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Listing details"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="665dp"
+            android:layout_height="561dp"
+            android:layout_marginBottom="80dp"
             android:layout_weight="1"
             android:fillViewport="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
             <!-- Your Scrollview content goes here -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <ImageSwitcher
+                    android:id="@+id/image"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center">
 
-                <TextView
-                    android:id="@+id/textView6"
+                </ImageSwitcher>
+
+                <!--click here to view previous image-->
+
+                <!--click here to view next image-->
+
+                <Button
+                    android:id="@+id/select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Listing details"
-                    android:textSize="30dp" />
+                    android:layout_marginTop="20dp"
+                    android:text="Select Multiple Images" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/next"
+                        android:layout_width="140dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="28dp"
+                        android:text="Next" />
+
+                    <Button
+                        android:id="@+id/previous"
+                        android:layout_width="140dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="20dp"
+                        android:text="Previous" />
+                </TableRow>
+
 
                 <EditText
                     android:id="@+id/item_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="50dp"
                     android:ems="10"
                     android:hint="Item name"
                     android:inputType="textPersonName" />
@@ -105,20 +150,23 @@
                         android:text="Poor"
                         tools:layout_editor_absoluteX="48dp"
                         tools:layout_editor_absoluteY="500dp" />
+
                 </RadioGroup>
+
             </LinearLayout>
         </ScrollView>
+
 
         <Button
             android:layout_width="181dp"
             android:layout_height="56dp"
-            android:layout_marginTop="664dp"
+            android:layout_marginBottom="4dp"
             android:gravity="center"
             android:text="List item"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
