@@ -25,7 +25,7 @@ public class SplashScreen extends AppCompatActivity {
                 music.stop();
                 finish();
             }
-        },5000);
+        },1000);
 
     }
 }

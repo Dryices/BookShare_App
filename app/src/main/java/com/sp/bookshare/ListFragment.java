@@ -10,16 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +47,6 @@ public class ListFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    Button select, previous, next;
     ImageSwitcher imageView;
     int PICK_IMAGE_MULTIPLE = 1;
     String imageEncoded;
@@ -50,10 +55,12 @@ public class ListFragment extends Fragment {
     int position = 0;
     List<String> imagesEncodedList;
 
+    EditText name,category,moduleCode,description;
+    RadioButton excellent,good,poor;
+    Button select, previous, next,list,map;
+
     public ListFragment() {
         // Required empty public constructor
-
-
     }
 
     /**
@@ -95,6 +102,21 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
+        //Inputs
+        name=view.findViewById(R.id.item_name);
+        category=view.findViewById(R.id.item_category);
+        moduleCode=view.findViewById(R.id.item_code);
+        description=view.findViewById(R.id.item_description);
+        map=view.findViewById(R.id.map_button);
+        list=view.findViewById(R.id.list_button);
+        excellent=view.findViewById(R.id.radio_excellent);
+        good=view.findViewById(R.id.radio_good);
+        poor=view.findViewById(R.id.radio_poor);
+
+        list.setOnClickListener(onListItem);
+        map.setOnClickListener(onMap);
+
+        //Select Image
         select = view.findViewById(R.id.select);
         total = view.findViewById(R.id.text);
         imageView = view.findViewById(R.id.image);
@@ -157,6 +179,21 @@ public class ListFragment extends Fragment {
             }
         });
     }
+    private View.OnClickListener onListItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            replaceFragment(new ProfileFragment());
+            Toast.makeText(getActivity(),"You have successfully listed your item!", Toast.LENGTH_LONG).show();
+        }
+    };
+    private View.OnClickListener onMap = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), Maps.class);
+            startActivity(intent);
+        }
+    };
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -185,6 +222,12 @@ public class ListFragment extends Fragment {
             // show this if no image is selected
             Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
+    }
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction =  fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.commit();
     }
 }
 
