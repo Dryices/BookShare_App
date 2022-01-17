@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.core.app.ActivityCompat;
@@ -58,7 +59,6 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case LOCATION_REQUEST_CODE: {
@@ -153,10 +153,12 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
             ft.addToBackStack(null);
             DialogFragment dialogFragment = new ConfirmAddress();
 
+            Log.d("Location","confirmadress dialog");
             Bundle args = new Bundle();
             args.putDouble("lat", latLng.latitude);
             args.putDouble("long", latLng.longitude);
             args.putString("address", address);
+            args.putString("postalCode",postalCode);
             dialogFragment.setArguments(args);
             dialogFragment.show(ft, "dialog");
             return address;

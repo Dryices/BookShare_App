@@ -87,7 +87,7 @@ public class GPSTracker extends Service implements LocationListener {
         return location;
     }
 
-    //Funtion to get latitude
+    //Function to get latitude
 
 
     public double getLatitude() {
@@ -97,7 +97,7 @@ public class GPSTracker extends Service implements LocationListener {
         return latitude;
     }
 
-    //Funtion to get longitude
+    //Function to get longitude
 
 
     public double getLongitude() {
