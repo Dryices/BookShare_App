@@ -111,7 +111,7 @@ public class Register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             progressBar.setVisibility(View.VISIBLE);
-                            User user = new User(nameStr, emailStr, phoneStr);
+                            Users user = new Users(nameStr, emailStr, phoneStr);
 
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

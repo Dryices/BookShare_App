@@ -1,3 +1,4 @@
+
 package com.sp.bookshare;
 
 import android.app.Activity;
@@ -25,7 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +47,7 @@ public class ListFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private DatabaseReference reference;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -182,8 +188,7 @@ public class ListFragment extends Fragment {
     private View.OnClickListener onListItem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            replaceFragment(new ProfileFragment());
-            Toast.makeText(getActivity(),"You have successfully listed your item!", Toast.LENGTH_LONG).show();
+            ItemList();
         }
     };
     private View.OnClickListener onMap = new View.OnClickListener() {
@@ -193,8 +198,48 @@ public class ListFragment extends Fragment {
             startActivity(intent);
         }
     };
+    public void ItemList(){
+        String nameStr = name.getText().toString().trim();
+        String categoryStr = category.getText().toString().trim();
+        String moduleStr = moduleCode.getText().toString().trim();
+        String descriptionStr = description.getText().toString().trim();
 
+        if (nameStr.isEmpty()) {
+            name.setError("Name field is required!");
+            name.requestFocus();
+            return;
+        } if (categoryStr.isEmpty()) {
+            category.setError("Name field is required!");
+            category.requestFocus();
+            return;
+        }
+        if (moduleStr.isEmpty()) {
+            moduleCode.setError("Name field is required!");
+            moduleCode.requestFocus();
+            return;
+        }
+        if (descriptionStr.isEmpty()) {
+            description.setError("Name field is required!");
+            description.requestFocus();
+            return;
+        }
+        Userdata userData = new Userdata(nameStr, categoryStr, moduleStr,descriptionStr);
 
+        FirebaseDatabase.getInstance().getReference("Userdata")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    replaceFragment(new ProfileFragment());
+                    Toast.makeText(getActivity(),"You have successfully listed your item!", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(getActivity(),"Failed to list an item", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

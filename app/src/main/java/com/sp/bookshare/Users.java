@@ -1,14 +1,14 @@
 package com.sp.bookshare;
 
-public class User {
+public class Users {
 
     public String name,email,phone;
 
-    public User(){
+    public Users(){
 
     }
 
-    public User(String name,String email,String phone){
+    public Users(String name, String email, String phone){
         this.name=name;
         this.email=email;
         this.phone=phone;
