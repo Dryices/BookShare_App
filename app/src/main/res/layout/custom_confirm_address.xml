@@ -24,7 +24,8 @@
         android:layout_width="match_parent"
         android:id="@+id/mapp"
         android:layout_marginTop="20dp"
-        android:layout_height="150dp"/>
+        android:layout_height="150dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"

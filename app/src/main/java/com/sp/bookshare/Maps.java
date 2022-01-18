@@ -11,6 +11,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -44,17 +45,13 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        Log.d("Location","Begin code");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
                     LOCATION_REQUEST_CODE);
         }
-    }
 
 
     @Override
@@ -65,7 +62,6 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
@@ -74,6 +70,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
                         //                                          int[] grantResults)
                         // to handle the case where the user grants the permission. See the documentation
                         // for ActivityCompat#requestPermissions for more details.
+                        Log.d("Location","location request code2");
                         return;
                     }
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -101,6 +98,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
                     mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
                         public void onMapClick(LatLng latLng) {
+
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(latLng);
 
@@ -112,11 +110,6 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
                             mMap.addMarker(markerOptions);
                         }
                     });
-
-
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
                 return;
             }
@@ -146,8 +139,8 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
             String knownName = addresses.get(0).getFeatureName();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-            if (prev != null) {
 
+            if (prev != null) {
                 ft.remove(prev);
             }
             ft.addToBackStack(null);
@@ -161,11 +154,11 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
             args.putString("postalCode",postalCode);
             dialogFragment.setArguments(args);
             dialogFragment.show(ft, "dialog");
-            return address;
+         return address;
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(Maps.this, "An error has occurred", Toast.LENGTH_LONG).show();
             return "No Address Found";
-
         }
 
 
