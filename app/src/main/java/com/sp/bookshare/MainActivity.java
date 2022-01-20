@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.profile:
                     replaceFragment(new ProfileFragment());
                     break;
+                case R.id.chat:
+                    replaceFragment(new ChatFragment());
+                    break;
             }
             return true;
         });
