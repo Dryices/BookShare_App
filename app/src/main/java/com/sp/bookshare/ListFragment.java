@@ -2,6 +2,7 @@
 package com.sp.bookshare;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +29,20 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,23 +56,28 @@ public class ListFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private DatabaseReference reference;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     ImageSwitcher imageView;
+    private static final String TAG = "ListFragment";
     int PICK_IMAGE_MULTIPLE = 1;
-    String imageEncoded;
+    String imageStr;
     TextView total;
     ArrayList<Uri> mArrayUri;
     int position = 0;
-    List<String> imagesEncodedList;
+    int cout=0;
 
     EditText name,category,moduleCode,description;
     RadioButton excellent,good,poor;
     Button select, previous, next,list,map;
+    Uri imageurl;
+
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
 
     public ListFragment() {
         // Required empty public constructor
@@ -107,6 +121,9 @@ public class ListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         //Inputs
         name=view.findViewById(R.id.item_name);
@@ -204,6 +221,8 @@ public class ListFragment extends Fragment {
         String moduleStr = moduleCode.getText().toString().trim();
         String descriptionStr = description.getText().toString().trim();
 
+        uploadImage();
+
         if (nameStr.isEmpty()) {
             name.setError("Name field is required!");
             name.requestFocus();
@@ -223,16 +242,16 @@ public class ListFragment extends Fragment {
             description.requestFocus();
             return;
         }
-        Userdata userData = new Userdata(nameStr, categoryStr, moduleStr,descriptionStr);
+        Userdata userData = new Userdata(nameStr, categoryStr, moduleStr,descriptionStr,imageStr);
 
         FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .push().setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     replaceFragment(new ProfileFragment());
-                    Toast.makeText(getActivity(),"You have successfully listed your item!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), "Last Image Already Shown", Toast.LENGTH_SHORT).show();
 
                 } else {
                     Toast.makeText(getActivity(),"Failed to list an item", Toast.LENGTH_LONG).show();
@@ -245,14 +264,17 @@ public class ListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         // When an Image is picked
         if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == Activity.RESULT_OK && null != data) {
+            imageurl = data.getData();
             // Get the Image from data
             if (data.getClipData() != null) {
                 ClipData mClipData = data.getClipData();
-                int cout = data.getClipData().getItemCount();
+                cout = data.getClipData().getItemCount();
                 for (int i = 0; i < cout; i++) {
                     // adding imageuri in array
-                    Uri imageurl = data.getClipData().getItemAt(i).getUri();
+                    imageurl = data.getData();
+                    //ClipData().getItemAt(i).getUri();
                     mArrayUri.add(imageurl);
+
                 }
                 // setting 1st selected image into image switcher
                 imageView.setImageURI(mArrayUri.get(0));
@@ -273,6 +295,84 @@ public class ListFragment extends Fragment {
         FragmentTransaction fragmentTransaction =  fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout,fragment);
         fragmentTransaction.commit();
+    }
+    private String uploadImage()
+    {
+        if (imageurl != null) {
+
+            // Code for showing progressDialog while uploading
+            ProgressDialog progressDialog
+                    = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            // Defining the child of storageReference
+            StorageReference ref
+                    = storageReference
+                    .child(
+                            "images/"
+                                    + UUID.randomUUID().toString());
+
+            // adding listeners on upload
+            // or failure of image
+            ref.putFile(imageurl)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                                @Override
+                                public void onSuccess(
+                                        UploadTask.TaskSnapshot taskSnapshot)
+                                {
+                                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            //Adding that URL to Realtime database
+                                            imageStr=uri.toString().trim();
+                                            Log.d(TAG, "Download URL = "+ imageStr);
+                                        }
+                                    });
+
+                                    // Image uploaded successfully
+                                    // Dismiss dialog
+                                    progressDialog.dismiss();
+
+                                }
+                            })
+
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e)
+                        {
+
+                            // Error, Image not uploaded
+                            progressDialog.dismiss();
+                            Toast
+                                    .makeText(getActivity(),
+                                            "Failed " + e.getMessage(),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    })
+                    .addOnProgressListener(
+                            new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                // Progress Listener for loading
+                                // percentage on the dialog box
+                                @Override
+                                public void onProgress(
+                                        UploadTask.TaskSnapshot taskSnapshot)
+                                {
+                                    double progress
+                                            = (100.0
+                                            * taskSnapshot.getBytesTransferred()
+                                            / taskSnapshot.getTotalByteCount());
+                                    progressDialog.setMessage(
+                                            "Uploaded "
+                                                    + (int)progress + "%");
+                                }
+                            });
+        }
+        return imageStr;
     }
 }
 
