@@ -64,20 +64,20 @@ public class ListFragment extends Fragment {
     ImageSwitcher imageView;
     private static final String TAG = "ListFragment";
     int PICK_IMAGE_MULTIPLE = 1;
-    String imageStr;
     TextView total;
     ArrayList<Uri> mArrayUri;
     int position = 0;
     int cout=0;
+    String groupId="";
 
     EditText name,category,moduleCode,description;
     RadioButton excellent,good,poor;
     Button select, previous, next,list,map;
     Uri imageurl;
 
+    //Firebase Storage declarations
     FirebaseStorage storage;
     StorageReference storageReference;
-
 
     public ListFragment() {
         // Required empty public constructor
@@ -220,8 +220,7 @@ public class ListFragment extends Fragment {
         String categoryStr = category.getText().toString().trim();
         String moduleStr = moduleCode.getText().toString().trim();
         String descriptionStr = description.getText().toString().trim();
-
-        uploadImage();
+        String imageStr="";
 
         if (nameStr.isEmpty()) {
             name.setError("Name field is required!");
@@ -242,22 +241,27 @@ public class ListFragment extends Fragment {
             description.requestFocus();
             return;
         }
+
         Userdata userData = new Userdata(nameStr, categoryStr, moduleStr,descriptionStr,imageStr);
+
+        groupId =  FirebaseDatabase.getInstance().getReference("Userdata")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
+        //Log.d(TAG, "GroupID = "+ groupId);
 
         FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .push().setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .child(groupId).setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     replaceFragment(new ProfileFragment());
-                    //Toast.makeText(getActivity(), "Last Image Already Shown", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getActivity(), "You have Successfully listed an item", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(),"Failed to list an item", Toast.LENGTH_LONG).show();
                 }
             }
         });
+        uploadImage();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,10 +300,9 @@ public class ListFragment extends Fragment {
         fragmentTransaction.replace(R.id.frame_layout,fragment);
         fragmentTransaction.commit();
     }
-    private String uploadImage()
+    private void uploadImage()
     {
         if (imageurl != null) {
-
             // Code for showing progressDialog while uploading
             ProgressDialog progressDialog
                     = new ProgressDialog(getActivity());
@@ -307,11 +310,7 @@ public class ListFragment extends Fragment {
             progressDialog.show();
 
             // Defining the child of storageReference
-            StorageReference ref
-                    = storageReference
-                    .child(
-                            "images/"
-                                    + UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
 
             // adding listeners on upload
             // or failure of image
@@ -326,9 +325,12 @@ public class ListFragment extends Fragment {
                                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
+                                            Log.d(TAG,"Group ID:"+groupId);
                                             //Adding that URL to Realtime database
-                                            imageStr=uri.toString().trim();
-                                            Log.d(TAG, "Download URL = "+ imageStr);
+                                            FirebaseDatabase.getInstance().getReference("Userdata")
+                                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                    .child(groupId).child("imageURL")
+                                                    .setValue(uri.toString());
                                         }
                                     });
 
@@ -343,14 +345,9 @@ public class ListFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e)
                         {
-
                             // Error, Image not uploaded
                             progressDialog.dismiss();
-                            Toast
-                                    .makeText(getActivity(),
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
+                            Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(
@@ -366,13 +363,10 @@ public class ListFragment extends Fragment {
                                             = (100.0
                                             * taskSnapshot.getBytesTransferred()
                                             / taskSnapshot.getTotalByteCount());
-                                    progressDialog.setMessage(
-                                            "Uploaded "
-                                                    + (int)progress + "%");
+                                    progressDialog.setMessage("Uploaded " + (int)progress + "%");
                                 }
                             });
         }
-        return imageStr;
     }
 }
 
