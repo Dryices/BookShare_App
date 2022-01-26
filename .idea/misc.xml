@@ -3,6 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_chat.xml" value="0.3625" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_home.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_list_details.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_login.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_maps.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_register.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/exploreitems.xml" value="0.22" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_chat.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_explore.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_list.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_listings_tab.xml" value="0.3625" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_profile_tab.xml" value="0.3625" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/BookShare/app/src/main/res/layout/url.xml" value="0.3625" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/font/raleway_bold.xml" value="0.1" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_chat.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_forgot_password.xml" value="0.20052083333333334" />
