@@ -33,7 +33,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -41,7 +40,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -78,6 +76,7 @@ public class ListFragment extends Fragment {
     //Firebase Storage declarations
     FirebaseStorage storage;
     StorageReference storageReference;
+
 
     public ListFragment() {
         // Required empty public constructor
@@ -131,7 +130,7 @@ public class ListFragment extends Fragment {
         moduleCode=view.findViewById(R.id.item_code);
         description=view.findViewById(R.id.item_description);
         map=view.findViewById(R.id.map_button);
-        list=view.findViewById(R.id.list_button);
+        list=view.findViewById(R.id.chat_btn);
         excellent=view.findViewById(R.id.radio_excellent);
         good=view.findViewById(R.id.radio_good);
         poor=view.findViewById(R.id.radio_poor);
@@ -246,6 +245,7 @@ public class ListFragment extends Fragment {
 
         groupId =  FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
+
         //Log.d(TAG, "GroupID = "+ groupId);
 
         FirebaseDatabase.getInstance().getReference("Userdata")
