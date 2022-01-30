@@ -33,7 +33,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
+
 
         register=findViewById(R.id.register_login);
         forgot=findViewById(R.id.forgot_login);

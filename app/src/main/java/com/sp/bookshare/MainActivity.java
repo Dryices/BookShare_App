@@ -1,49 +1,64 @@
 package com.sp.bookshare;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-import com.sp.bookshare.databinding.ActivityHomeBinding;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityHomeBinding binding;
+    private DrawerLayout drawer;
+    private AppBarConfiguration appBarConfiguration;
+    private MenuItem logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        replaceFragment(new ExploreFragment());
+        setContentView(R.layout.activity_main);
 
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+        /* ---- Binding Views ---- */
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        NavigationView navigationView = findViewById(R.id.nav_view);
 
-            switch(item.getItemId()){
-                case R.id.explore:
-                    replaceFragment(new ExploreFragment());
-                    break;
-                case R.id.list:
-                    replaceFragment(new ListFragment());
-                    break;
-                case R.id.profile:
-                    replaceFragment(new ProfileFragment());
-                    break;
-                case R.id.chat:
-                    replaceFragment(new ChatFragment());
-                    break;
-            }
-            return true;
-        });
+        NavController navController = Navigation.findNavController(this,  R.id.fragment_container);
+
+        /* ---- Navigation using NavGraph ---- */
+        appBarConfiguration =
+                new AppBarConfiguration.Builder(R.id.explore, R.id.chat, R.id.list,R.id.profile)
+                        .setDrawerLayout(drawer).build(); //up button will not be displayed for these destinations
+        setSupportActionBar(toolbar);
+        setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        NavigationUI.setupWithNavController(navigationView, navController);
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.fragment_container);
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 
-    private void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction =  fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
-        fragmentTransaction.commit();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        NavController navController = Navigation.findNavController(this, R.id.fragment_container);
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
     }
 }

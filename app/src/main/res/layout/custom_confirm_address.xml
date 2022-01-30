@@ -1,56 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:layout_height="match_parent">
+    android:padding="10dp">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Use this location?"
         android:textColor="#000"
-        android:textSize="18dp"
-        ></TextView>
+        android:textSize="18dp"></TextView>
+
     <TextView
+        android:id="@+id/myAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Use this location?"
-        android:id="@+id/myAddress"
 
         ></TextView>
+
     <fragment
+        android:id="@+id/mapp"
         class="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:id="@+id/mapp"
-        android:layout_marginTop="20dp"
         android:layout_height="150dp"
-        />
+        android:layout_marginTop="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="30dp"
         android:gravity="right"
+        android:orientation="horizontal"
 
         >
+
         <Button
+            android:id="@+id/Change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
             android:text="Change Location"
             android:textColor="#000"
-            android:layout_marginRight="20dp"
-            android:id="@+id/Change"
 
             ></Button>
+
         <Button
+            android:id="@+id/Select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select"
-            android:textColor="#000"
-            android:id="@+id/Select"
-            ></Button>
+            android:textColor="#000"></Button>
 
     </LinearLayout>
 

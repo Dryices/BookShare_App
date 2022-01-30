@@ -14,13 +14,13 @@
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="660dp"
+            android:layout_height="600dp"
             android:layout_weight="1"
             android:fillViewport="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <!-- Your Scrollview content goes here -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,9 +34,6 @@
 
                 </ImageSwitcher>
 
-                <!--click here to view previous image-->
-
-                <!--click here to view next image-->
 
                 <Button
                     android:id="@+id/select"
@@ -115,33 +112,7 @@
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="402dp">
-
-                    <RadioButton
-                        android:id="@+id/radio_excellent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Excellent"
-                        tools:layout_editor_absoluteX="48dp"
-                        tools:layout_editor_absoluteY="404dp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_good"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Good"
-                        tools:layout_editor_absoluteX="48dp"
-                        tools:layout_editor_absoluteY="452dp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_poor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Poor"
-                        tools:layout_editor_absoluteX="48dp"
-                        tools:layout_editor_absoluteY="500dp" />
-
-                </RadioGroup>
+                    tools:layout_editor_absoluteY="402dp" />
 
             </LinearLayout>
         </ScrollView>

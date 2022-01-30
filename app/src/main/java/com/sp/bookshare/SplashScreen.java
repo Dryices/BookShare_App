@@ -13,7 +13,6 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
-        getSupportActionBar().hide();
 
         MediaPlayer music = MediaPlayer.create(SplashScreen.this, R.raw.trimmedsplashmusic);
         music.start();

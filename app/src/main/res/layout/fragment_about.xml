@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="297dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.508"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="297dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Developed by Harith Irfan"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="297dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="128dp"
+            android:autoLink="web"
+            android:gravity="center"
+            android:text="Github: https://github.com/Dryices"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="297dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="72dp"
+            android:autoLink="email"
+            android:gravity="center"
+            android:text="Email: hrif.ifan@gmail.com"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="402dp"
+            android:layout_height="343dp"
+            android:layout_marginTop="180dp"
+            android:gravity="center"
+            android:text="Desciption: BookShare is an app that allows users to resell their used books and course notes to others in Singapore. It is inspired by Carousell as it has a similar concept where users can sell and buy items on a unified platform. The main difference of BookShare is that it allows users to exclusively sell educational materials to each other. The main target of the app is students, teachers, lecturers, professors and parents.
+
+Most students in Singapore use assessment books, course notes or online resources for use in their learning in their educations. Currently pre- and post-secondary institution continue using physical books and notes. The problem is once students finish using these books or notes, they will mostly likely be collecting dust at home."
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.508"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
