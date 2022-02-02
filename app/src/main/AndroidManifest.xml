@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BookShare">
         <activity
+            android:name=".Ball"
+            android:exported="false" />
+        <activity
             android:name=".ListDetails"
             android:exported="false" />
         <!--
