@@ -25,6 +25,9 @@ https://www.youtube.com/watch?v=Z-RE1QuUWPg
 Navigation Drawer:
 https://youtu.be/fGcMLu1GJEc
 
+2D Graphics:
+https://www3.ntu.edu.sg/home/ehchua/programming/android/Android_2D.html
+
 App logo:
 Adobe XD.
 
