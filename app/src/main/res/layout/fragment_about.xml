@@ -12,7 +12,7 @@
 
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/about_image"
             android:layout_width="297dp"
             android:layout_height="200dp"
             android:layout_marginTop="4dp"
@@ -32,7 +32,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/about_image" />
 
         <TextView
             android:id="@+id/textView2"
@@ -46,10 +46,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/about_image" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/about_email"
             android:layout_width="297dp"
             android:layout_height="50dp"
             android:layout_marginTop="72dp"
@@ -60,7 +60,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/about_image" />
 
         <TextView
             android:id="@+id/textView4"
@@ -75,7 +75,7 @@ Most students in Singapore use assessment books, course notes or online resource
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.508"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/about_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
