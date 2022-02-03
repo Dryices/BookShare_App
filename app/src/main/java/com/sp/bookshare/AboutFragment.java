@@ -1,12 +1,12 @@
 package com.sp.bookshare;
 
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +30,15 @@ public class AboutFragment extends Fragment {
 
     private TextView email;
     private ImageView image;
+    String name;
+
+    Handler mainHandler =  new Handler();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("LOG", "ONCREATE");
 
     }
 
@@ -41,15 +46,19 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
+       View v =  inflater.inflate(R.layout.fragment_about, container, false);
+        email=v.findViewById(R.id.about_email1);
+        image=v.findViewById(R.id.about_image);
+       return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        email=view.findViewById(R.id.about_email);
-        image=view.findViewById(R.id.about_image);
+        //email=view.findViewById(R.id.about_email1);
+        //image=view.findViewById(R.id.about_image);
+        new fetchData().start();
 
     }
 
@@ -64,18 +73,13 @@ public class AboutFragment extends Fragment {
                 @Override
                 public void run() {
 
-                    /*progressDialog = new ProgressDialog(getContext());
-                    progressDialog.setMessage("Fetching Data");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();*/
-
                 }
             });
 
             try {
                 Log.d("LOG", "trying json");
-                //https://www.npoint.io/docs/cbb709d068check583b916068
-                URL url = new URL("https://api.npoint.io/cbb709d068583b916068");
+                //https://www.npoint.io/docs/181b576a0742fd2ad6c7
+                URL url = new URL("https://api.npoint.io/181b576a0742fd2ad6c7");
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -87,17 +91,15 @@ public class AboutFragment extends Fragment {
 
                 if (!data.isEmpty()){
                     JSONObject jsonObject = new JSONObject(data);
-                    JSONArray users = jsonObject.getJSONArray("Healthtips");
+                    JSONArray users = jsonObject.getJSONArray("BookShare");
                     Log.d("LOG", String.valueOf(users));
-                    userList.clear();
                     for(int  i =0;i< users.length();i++){
                         JSONObject names = users.getJSONObject(i);
-                        JSONObject images = users.getJSONObject(i);
-                        String name = names.getString("healthtext");
-                        String image = names.getString("healthimage");
-                        userList.add(name);
-                        imagelist.add(image);
-                        Log.d("LOG", String.valueOf(name));
+                        //JSONObject images = users.getJSONObject(i);
+                         name = names.getString("email");
+                        //String image = names.getString("image");
+
+                        Log.d("TEST2", name);
 
                     }
                 }
@@ -116,15 +118,8 @@ public class AboutFragment extends Fragment {
                 @Override
                 public void run() {
 
-                   /* if (progressDialog.isShowing())
-                        progressDialog.dismiss();*/
+                    email.setText(name);
 
-                    customadapter = new Customadapter(getContext(),userList,imagelist);
-                    healthview.setAdapter(customadapter);
-                    healthview.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-                    customadapter.notifyDataSetChanged();
                 }
             });
         }

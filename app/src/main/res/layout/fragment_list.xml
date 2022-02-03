@@ -74,6 +74,17 @@
                     android:inputType="textPersonName" />
 
                 <EditText
+                    android:id="@+id/item_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="101dp"
+                    android:layout_marginTop="50dp"
+                    android:ems="10"
+                    android:hint="Price"
+                    android:inputType="number"
+                    android:maxLength="3" />
+
+
+                <EditText
                     android:id="@+id/item_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -105,14 +116,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Set Location" />
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="402dp" />
 
             </LinearLayout>
         </ScrollView>

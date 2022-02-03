@@ -57,7 +57,7 @@ public class ListFragment extends Fragment {
     String groupId="";
 
 
-    EditText name,category,moduleCode,description;
+    EditText name,price,category,moduleCode,description;
     Button select, previous, next,list,map;
     Uri imageurl;
 
@@ -91,6 +91,7 @@ public class ListFragment extends Fragment {
 
         //Inputs
         name=view.findViewById(R.id.item_name);
+        price=view.findViewById(R.id.item_price);
         category=view.findViewById(R.id.item_category);
         moduleCode=view.findViewById(R.id.item_code);
         description=view.findViewById(R.id.item_description);
@@ -178,6 +179,7 @@ public class ListFragment extends Fragment {
         }
     };
     public void ItemList(){
+        String priceStr = price.getText().toString().trim();
         String nameStr = name.getText().toString().trim();
         String categoryStr = category.getText().toString().trim();
         String moduleStr = moduleCode.getText().toString().trim();
@@ -187,6 +189,10 @@ public class ListFragment extends Fragment {
         if (nameStr.isEmpty()) {
             name.setError("Name field is required!");
             name.requestFocus();
+            return;
+        } if (priceStr.isEmpty()) {
+            price.setError("Name field is required!");
+            price.requestFocus();
             return;
         } if (categoryStr.isEmpty()) {
             category.setError("Name field is required!");
@@ -204,7 +210,7 @@ public class ListFragment extends Fragment {
             return;
         }
 
-        Userdata userData = new Userdata(nameStr, categoryStr, moduleStr,descriptionStr,imageStr);
+        Userdata userData = new Userdata(nameStr,priceStr, categoryStr, moduleStr,descriptionStr,imageStr);
 
         groupId =  FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();

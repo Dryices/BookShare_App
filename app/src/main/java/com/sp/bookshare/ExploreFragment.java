@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,32 +51,53 @@ public class ExploreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
+        String TAG = "test";
         recyclerView = view.findViewById(R.id.userList);
-        database = FirebaseDatabase.getInstance().getReference("Userdata").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        database = FirebaseDatabase.getInstance().getReference().child("Userdata"); //.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         list = new ArrayList<>();
-        myAdapter = new MyAdapter(getActivity(),list);
+        myAdapter = new MyAdapter(getActivity(), list);
         recyclerView.setAdapter(myAdapter);
 
-        database.addValueEventListener(new ValueEventListener() {
+        database.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                for (DataSnapshot ds : snapshot.getChildren()){
-
-                    GetUserdata user = ds.getValue(GetUserdata.class);
-                    list.add(user);
+                //Do whatever further processing you need
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    GetUserdata userdata = ds.getValue(GetUserdata.class);
+                    list.add(userdata);
+                    Log.d(TAG, "showData: name: " + userdata.getItemname());
+                    Log.d(TAG, "showData: price: " + userdata.getPrice());
+                    Log.d(TAG, "showData: category: " + userdata.getCategory());
+                    Log.d(TAG, "showData: module: " + userdata.getModulecode());
+                    Log.d(TAG, "showData: image: " + userdata.getimageURL());
                 }
+
                 myAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
+
 }

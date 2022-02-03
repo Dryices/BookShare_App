@@ -40,6 +40,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         GetUserdata user = list.get(position);
+        holder.username.setText(user.getItemname());
+        holder.price.setText(user.getPrice());
         holder.itemname.setText(user.getItemname());
         holder.category.setText(user.getCategory());
         holder.modulecode.setText(user.getModulecode());
@@ -52,7 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(view.getContext(), Login.class);
+                Intent intent = new Intent(view.getContext(), ListDetails.class);
                 view.getContext().startActivity(intent);
             }
         });
@@ -67,12 +69,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView itemname, category,modulecode;
+        TextView username,price,itemname, category,modulecode;
         ImageView itemImage;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            username = itemView.findViewById(R.id.view_username);
+            price = itemView.findViewById(R.id.view_price);
             itemname = itemView.findViewById(R.id.view_name);
             category = itemView.findViewById(R.id.view_category);
             modulecode = itemView.findViewById(R.id.view_modulecode);
