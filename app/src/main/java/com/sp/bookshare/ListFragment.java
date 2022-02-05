@@ -1,32 +1,35 @@
 
 package com.sp.bookshare;
 
-import android.app.Activity;
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -41,24 +44,30 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class ListFragment extends Fragment {
 
-    ImageSwitcher imageView;
+    ImageView imageView;
+    File Destination;
     private static final String TAG = "ListFragment";
-    int PICK_IMAGE_MULTIPLE = 1;
-    TextView total;
-    ArrayList<Uri> mArrayUri;
-    int position = 0;
-    int cout=0;
-    String groupId="";
+    String groupId = "";
+
+    private static final int GalleryPick = 1;
+    private static final int CAMERA_REQUEST = 100;
+    private static final int STORAGE_REQUEST = 200;
+    private static final int PICK_Camera_IMAGE = 2;
+    String cameraPermission[];
+    String storagePermission[];
 
 
-    EditText name,price,category,moduleCode,description;
-    Button select, previous, next,list,map;
+    EditText name, price, category, moduleCode, description;
+    Button select, list, map;
     Uri imageurl;
 
     //Firebase Storage declarations
@@ -86,84 +95,157 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
+        // allowing permissions of gallery and camera
+        cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
         //Inputs
-        name=view.findViewById(R.id.item_name);
-        price=view.findViewById(R.id.item_price);
-        category=view.findViewById(R.id.item_category);
-        moduleCode=view.findViewById(R.id.item_code);
-        description=view.findViewById(R.id.item_description);
-        map=view.findViewById(R.id.map_button);
-        list=view.findViewById(R.id.chat_btn);
+        name = view.findViewById(R.id.item_name);
+        price = view.findViewById(R.id.item_price);
+        category = view.findViewById(R.id.item_category);
+        moduleCode = view.findViewById(R.id.item_code);
+        description = view.findViewById(R.id.item_description);
+        map = view.findViewById(R.id.map_button);
+        list = view.findViewById(R.id.chat_btn);
 
         list.setOnClickListener(onListItem);
         map.setOnClickListener(onMap);
 
         //Select Image
         select = view.findViewById(R.id.select);
-        total = view.findViewById(R.id.text);
-        imageView = view.findViewById(R.id.image);
-        previous = view.findViewById(R.id.previous);
-        mArrayUri = new ArrayList<Uri>();
+        imageView = view.findViewById(R.id.item_image);
 
-        // showing all images in imageswitcher
-        imageView.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView imageView1 = new ImageView(getActivity().getApplicationContext());
-                return imageView1;
-            }
-        });
-        next = view.findViewById(R.id.next);
-
-        // click here to select next image
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (position < mArrayUri.size() - 1) {
-                    // increase the position by 1
-                    position++;
-                    imageView.setImageURI(mArrayUri.get(position));
-                } else {
-                    Toast.makeText(getActivity(), "Last Image Already Shown", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        // click here to view previous image
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (position > 0) {
-                    // decrease the position by 1
-                    position--;
-                    imageView.setImageURI(mArrayUri.get(position));
-                }
-            }
-        });
-
-        imageView = view.findViewById(R.id.image);
 
         // click here to select image
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // initialising intent
-                Intent intent = new Intent();
-
-                // setting type to select to be image
-                intent.setType("image/*");
-
-                // allowing multiple image to be selected
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
+                showImagePicDialog();
             }
         });
     }
+
+    private void showImagePicDialog() {
+        String options[] = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Pick Image From");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    if (!checkCameraPermission()) {
+                        requestCameraPermission();
+                        Log.d(TAG, "onClick: 1");
+                    } else {
+                        Log.d(TAG, "onClick: 2");
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, PICK_Camera_IMAGE);
+                    }
+                } else if (which == 1) {
+                    if (!checkStoragePermission()) {
+                        requestStoragePermission();
+                        Log.d(TAG, "onClick:3");
+                    } else {
+                        Log.d(TAG, "onClick: 4");
+                        // initialising intent
+                        Intent intent = new Intent();
+
+                        // setting type to select to be image
+                        intent.setType("image/*");
+
+                        // allowing multiple image to be selected
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+                    }
+                }
+            }
+        });
+        builder.create().show();
+    }
+
+    // checking storage permissions
+    private Boolean checkStoragePermission() {
+        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+
+    // Requesting  gallery permission
+    private void requestStoragePermission() {
+        requestPermissions(storagePermission, STORAGE_REQUEST);
+    }
+
+    // checking camera permissions
+    private Boolean checkCameraPermission() {
+        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+        boolean result1 = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        return result && result1;
+    }
+
+    // Requesting camera permission
+    private void requestCameraPermission() {
+        requestPermissions(cameraPermission, CAMERA_REQUEST);
+    }
+
+    // Requesting camera and gallery
+    // permission if not given
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CAMERA_REQUEST: {
+                if (grantResults.length > 0) {
+                    boolean camera_accepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageaccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (camera_accepted && writeStorageaccepted) {
+                        pickFromGallery();
+                    } else {
+                        Toast.makeText(getActivity(), "Please Enable Camera and Storage Permissions", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+            break;
+            case STORAGE_REQUEST: {
+                if (grantResults.length > 0) {
+                    boolean writeStorageaccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (writeStorageaccepted) {
+                        pickFromGallery();
+                    } else {
+                        Toast.makeText(getActivity(), "Please Enable Storage Permissions", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+            break;
+        }
+    }
+
+    // Here we will pick image from gallery or camera
+    private void pickFromGallery() {
+        // initialising intent
+        Intent intent = new Intent();
+
+        // setting type to select to be image
+        intent.setType("image/*");
+
+        // allowing multiple image to be selected
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+        Log.d(TAG, "onClick: 5");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onClick: onActivity");
+            if (resultCode == RESULT_OK) {
+               imageurl=data.getData();
+                Picasso.get().load(imageurl).into(imageView);
+                Log.d(TAG, "onClick:" + imageurl);
+            }
+        }
 
     private View.OnClickListener onListItem = new View.OnClickListener() {
         @Override
@@ -178,23 +260,26 @@ public class ListFragment extends Fragment {
             startActivity(intent);
         }
     };
-    public void ItemList(){
+
+    public void ItemList() {
         String priceStr = price.getText().toString().trim();
         String nameStr = name.getText().toString().trim();
         String categoryStr = category.getText().toString().trim();
         String moduleStr = moduleCode.getText().toString().trim();
         String descriptionStr = description.getText().toString().trim();
-        String imageStr="";
+        String imageStr = "";
 
         if (nameStr.isEmpty()) {
             name.setError("Name field is required!");
             name.requestFocus();
             return;
-        } if (priceStr.isEmpty()) {
+        }
+        if (priceStr.isEmpty()) {
             price.setError("Name field is required!");
             price.requestFocus();
             return;
-        } if (categoryStr.isEmpty()) {
+        }
+        if (categoryStr.isEmpty()) {
             category.setError("Name field is required!");
             category.requestFocus();
             return;
@@ -210,9 +295,9 @@ public class ListFragment extends Fragment {
             return;
         }
 
-        Userdata userData = new Userdata(nameStr,priceStr, categoryStr, moduleStr,descriptionStr,imageStr);
+        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr);
 
-        groupId =  FirebaseDatabase.getInstance().getReference("Userdata")
+        groupId = FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
 
         //Log.d(TAG, "GroupID = "+ groupId);
@@ -222,57 +307,26 @@ public class ListFragment extends Fragment {
                 .child(groupId).setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     replaceFragment(new ProfileFragment());
                     Toast.makeText(getActivity(), "You have Successfully listed an item", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(),"Failed to list an item", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Failed to list an item", Toast.LENGTH_LONG).show();
                 }
             }
         });
         uploadImage();
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // When an Image is picked
-        if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == Activity.RESULT_OK && null != data) {
-            imageurl = data.getData();
-            // Get the Image from data
-            if (data.getClipData() != null) {
-                ClipData mClipData = data.getClipData();
-                cout = data.getClipData().getItemCount();
-                for (int i = 0; i < cout; i++) {
-                    // adding imageuri in array
-                    imageurl = data.getData();
-                    //ClipData().getItemAt(i).getUri();
-                    mArrayUri.add(imageurl);
 
-                }
-                // setting 1st selected image into image switcher
-                imageView.setImageURI(mArrayUri.get(0));
-                position = 0;
-            } else {
-                Uri imageurl = data.getData();
-                mArrayUri.add(imageurl);
-                imageView.setImageURI(mArrayUri.get(0));
-                position = 0;
-            }
-        } else {
-            // show this if no image is selected
-            Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
-        }
-    }
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction fragmentTransaction =  fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,fragment);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
 
 
-    private void uploadImage()
-    {
+    private void uploadImage() {
         if (imageurl != null) {
             // Code for showing progressDialog while uploading
             ProgressDialog progressDialog
@@ -291,12 +345,11 @@ public class ListFragment extends Fragment {
 
                                 @Override
                                 public void onSuccess(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
+                                        UploadTask.TaskSnapshot taskSnapshot) {
                                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
-                                            Log.d(TAG,"Group ID:"+groupId);
+                                            Log.d(TAG, "Group ID:" + groupId);
                                             //Adding that URL to Realtime database
                                             FirebaseDatabase.getInstance().getReference("Userdata")
                                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -314,8 +367,7 @@ public class ListFragment extends Fragment {
 
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
+                        public void onFailure(@NonNull Exception e) {
                             // Error, Image not uploaded
                             progressDialog.dismiss();
                             Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -328,13 +380,12 @@ public class ListFragment extends Fragment {
                                 // percentage on the dialog box
                                 @Override
                                 public void onProgress(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
+                                        UploadTask.TaskSnapshot taskSnapshot) {
                                     double progress
                                             = (100.0
                                             * taskSnapshot.getBytesTransferred()
                                             / taskSnapshot.getTotalByteCount());
-                                    progressDialog.setMessage("Uploaded " + (int)progress + "%");
+                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
                                 }
                             });
         }

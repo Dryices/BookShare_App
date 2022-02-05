@@ -55,7 +55,7 @@
             android:layout_marginTop="72dp"
             android:autoLink="email"
             android:gravity="center"
-            android:text="Email: hrif.ifan@gmail.com"
+            android:text="Email:"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
@@ -64,13 +64,11 @@
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="402dp"
-            android:layout_height="343dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="180dp"
             android:gravity="center"
-            android:text="Desciption: BookShare is an app that allows users to resell their used books and course notes to others in Singapore. It is inspired by Carousell as it has a similar concept where users can sell and buy items on a unified platform. The main difference of BookShare is that it allows users to exclusively sell educational materials to each other. The main target of the app is students, teachers, lecturers, professors and parents.
-
-Most students in Singapore use assessment books, course notes or online resources for use in their learning in their educations. Currently pre- and post-secondary institution continue using physical books and notes. The problem is once students finish using these books or notes, they will mostly likely be collecting dust at home."
+            android:text="VERSION 1.0"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.508"

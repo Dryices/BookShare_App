@@ -26,49 +26,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageSwitcher
-                    android:id="@+id/image"
+                <ImageView
+                    android:id="@+id/item_image"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
-                    android:layout_gravity="center">
-
-                </ImageSwitcher>
-
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"/>
 
                 <Button
                     android:id="@+id/select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Select Multiple Images" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Button
-                        android:id="@+id/next"
-                        android:layout_width="140dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="50dp"
-                        android:text="Next" />
-
-                    <Button
-                        android:id="@+id/previous"
-                        android:layout_width="140dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="right"
-                        android:layout_marginLeft="25dp"
-                        android:text="Previous" />
-                </TableRow>
+                    android:text="Select an image" />
 
 
                 <EditText
                     android:id="@+id/item_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="20dp"
                     android:ems="10"
                     android:hint="Item name"
                     android:inputType="textPersonName" />
@@ -76,8 +53,7 @@
                 <EditText
                     android:id="@+id/item_price"
                     android:layout_width="match_parent"
-                    android:layout_height="101dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Price"
                     android:inputType="number"
