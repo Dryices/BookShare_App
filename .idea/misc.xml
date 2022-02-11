@@ -22,13 +22,19 @@
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_chat.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_forgot_password.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_home_page.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_list_details.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/activity_register.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/exploreitems.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_about.xml" value="0.4" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_chat.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_explore.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_list.xml" value="0.264" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_profile.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/fragment_settings.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/listtest.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/layout/splashscreen.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/BookShare/app/src/main/res/menu/nav_drawer.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

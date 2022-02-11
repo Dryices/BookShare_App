@@ -1,19 +1,16 @@
 package com.sp.bookshare;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileFragment extends Fragment {
 
     private TextView name, email, phone,logout;
-    private Intent intent;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
@@ -52,8 +48,6 @@ public class ProfileFragment extends Fragment {
         name=view.findViewById(R.id.profile_name);
         email=view.findViewById(R.id.profile_email);
         phone=view.findViewById(R.id.profile_phone);
-        logout=view.findViewById(R.id.logout_id);
-        logout.setOnClickListener(onLogout);
 
         user= FirebaseAuth.getInstance().getCurrentUser();
         reference= FirebaseDatabase.getInstance().getReference("Users");
@@ -111,14 +105,4 @@ public class ProfileFragment extends Fragment {
         spec.setIndicator("About");
         tabhost.addTab(spec);
     }
-
-    private View.OnClickListener onLogout = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            FirebaseAuth.getInstance().signOut();
-            intent = new Intent(getActivity(), Login.class);
-            startActivity(intent);
-            Toast.makeText(getActivity(),"You have successfully logged out!", Toast.LENGTH_LONG).show();
-        }
-    };
 }

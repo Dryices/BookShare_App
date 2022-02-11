@@ -55,6 +55,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             public void onClick(View view) {
 
                 Intent intent = new Intent(view.getContext(), ListDetails.class);
+                intent.putExtra("name",user.getItemname());
+                Log.d("test",user.getItemname());
                 view.getContext().startActivity(intent);
             }
         });
@@ -71,6 +73,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         TextView username,price,itemname, category,modulecode;
         ImageView itemImage;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

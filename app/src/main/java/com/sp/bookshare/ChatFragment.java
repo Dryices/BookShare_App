@@ -34,15 +34,14 @@ public class ChatFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        button=view.findViewById(R.id.sendmsg);
         button.setOnClickListener(onSend);
     }
 
     private View.OnClickListener onSend = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), Ball.class);
-            startActivity(intent);
+
+            //startActivity(intent);
         }
     };
 }

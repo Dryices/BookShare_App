@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -46,9 +47,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.UUID;
 
 public class ListFragment extends Fragment {
@@ -69,6 +73,10 @@ public class ListFragment extends Fragment {
     EditText name, price, category, moduleCode, description;
     Button select, list, map;
     Uri imageurl;
+    Uri selectedImageUri;
+
+    Bitmap bitmap;
+
 
     //Firebase Storage declarations
     FirebaseStorage storage;
@@ -123,7 +131,13 @@ public class ListFragment extends Fragment {
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showImagePicDialog();
+                //showImagePicDialog();
+
+                ImagePicker.with(ListFragment.this)
+                        .crop(16f, 9f)    			//Crop image(Optional), Check Customization for more option
+                        .compress(508)			//Final image size will be less than 0.5 MB(Optional)
+                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                        .start();
             }
         });
     }
@@ -237,15 +251,34 @@ public class ListFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onClick: onActivity");
-            if (resultCode == RESULT_OK) {
-               imageurl=data.getData();
-                Picasso.get().load(imageurl).into(imageView);
-                Log.d(TAG, "onClick:" + imageurl);
+        if (resultCode == RESULT_OK) {
+            selectedImageUri = data.getData();
+            Log.d("LOG1",  " data.getdata ");
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                //bitmap = Bitmap.createScaledBitmap(bitmap,  600,392,true);
+                Log.d("LOG1",  " uri to bitmap ");
+
+            } catch (IOException e) {
+                Log.d("LOG1",  " ioexception e");
+                e.printStackTrace();
             }
+            if (selectedImageUri != null) {
+
+                Log.d("LOG1",  " there is a uri ");
+
+                imageView.setImageURI(selectedImageUri);
+                imageView.setVisibility(View.VISIBLE);
+
+            }else{
+                Log.d("LOG1",  " there is no uri ");
+            }
+        }else{
+            Log.d("LOG1",  " result code not ok ");
         }
+    }
 
     private View.OnClickListener onListItem = new View.OnClickListener() {
         @Override
@@ -338,7 +371,6 @@ public class ListFragment extends Fragment {
             StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
 
             // adding listeners on upload
-            // or failure of image
             ref.putFile(imageurl)
                     .addOnSuccessListener(
                             new OnSuccessListener<UploadTask.TaskSnapshot>() {

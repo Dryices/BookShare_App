@@ -25,11 +25,14 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private AppBarConfiguration appBarConfiguration;
     private MenuItem logout;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        navigationView=findViewById(R.id.logout);
 
         /* ---- Binding Views ---- */
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -47,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
         setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        navigationView.getMenu().findItem(R.id.logout).setOnMenuItemClickListener(menuItem -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+            Toast.makeText(this,"You have successfully logged out!", Toast.LENGTH_LONG).show();
+            return true;
+        });
     }
     @Override
     public boolean onSupportNavigateUp() {

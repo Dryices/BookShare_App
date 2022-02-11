@@ -55,9 +55,6 @@ public class AboutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //email=view.findViewById(R.id.about_email1);
-        //image=view.findViewById(R.id.about_image);
         new fetchData().start();
 
     }

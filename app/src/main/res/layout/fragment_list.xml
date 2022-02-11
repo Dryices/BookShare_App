@@ -28,10 +28,10 @@
 
                 <ImageView
                     android:id="@+id/item_image"
-                    android:layout_width="200dp"
+                    android:layout_width="350dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp" />
 
                 <Button
                     android:id="@+id/select"
