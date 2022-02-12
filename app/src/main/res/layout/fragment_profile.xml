@@ -8,6 +8,17 @@
     tools:context=".ProfileFragment">
 
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="My listings:"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="100dp"
@@ -69,109 +80,29 @@
                 android:padding="5dp"
                 android:text="Input"
                 android:textSize="15dp" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-    <TabHost
-        android:id="@+id/tabhost_id"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="405dp"
-        android:layout_height="434dp"
+        android:layout_height="350dp"
         android:layout_marginTop="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <!--Tab widget to select the tab-->
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!--FrameLayout which contains the data of the activity-->
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <!--for tab 1-->
-                <LinearLayout
-                    android:id="@+id/Listings"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#FFC0CB"
-                    android:orientation="vertical">
-
-                    <!--Text View for applying the text to the tab-->
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="180dp"
-                                android:text="Listing Page"
-                                android:textColor="#000"
-                                android:textSize="32sp" />
-                        </LinearLayout>
-                    </ScrollView>
-
-                </LinearLayout>
-
-                <!--for tab 2-->
-                <LinearLayout
-                    android:id="@+id/Ratings"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#90ee90"
-                    android:orientation="vertical">
-
-                    <!--Text View for applying the text to the tab-->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="180dp"
-                        android:text="Ratings Page"
-                        android:textColor="#000"
-                        android:textSize="32sp" />
-                </LinearLayout>
-
-                <!--for tab 3-->
-                <LinearLayout
-                    android:id="@+id/About"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#add8e6"
-                    android:orientation="vertical">
-
-                    <!--Text View for applying the text to the tab-->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="180dp"
-                        android:text="About Page"
-                        android:textColor="#000"
-                        android:textSize="32sp" />
-                </LinearLayout>
-
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

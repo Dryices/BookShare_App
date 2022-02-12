@@ -34,7 +34,6 @@ public class ChatFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        button.setOnClickListener(onSend);
     }
 
     private View.OnClickListener onSend = new View.OnClickListener() {

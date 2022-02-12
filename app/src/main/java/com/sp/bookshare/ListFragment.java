@@ -73,7 +73,6 @@ public class ListFragment extends Fragment {
     EditText name, price, category, moduleCode, description;
     Button select, list, map;
     Uri imageurl;
-    Uri selectedImageUri;
 
     Bitmap bitmap;
 
@@ -142,44 +141,6 @@ public class ListFragment extends Fragment {
         });
     }
 
-    private void showImagePicDialog() {
-        String options[] = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Pick Image From");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    if (!checkCameraPermission()) {
-                        requestCameraPermission();
-                        Log.d(TAG, "onClick: 1");
-                    } else {
-                        Log.d(TAG, "onClick: 2");
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, PICK_Camera_IMAGE);
-                    }
-                } else if (which == 1) {
-                    if (!checkStoragePermission()) {
-                        requestStoragePermission();
-                        Log.d(TAG, "onClick:3");
-                    } else {
-                        Log.d(TAG, "onClick: 4");
-                        // initialising intent
-                        Intent intent = new Intent();
-
-                        // setting type to select to be image
-                        intent.setType("image/*");
-
-                        // allowing multiple image to be selected
-                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-                    }
-                }
-            }
-        });
-        builder.create().show();
-    }
 
     // checking storage permissions
     private Boolean checkStoragePermission() {
@@ -254,10 +215,10 @@ public class ListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            selectedImageUri = data.getData();
+            imageurl = data.getData();
             Log.d("LOG1",  " data.getdata ");
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageurl);
                 //bitmap = Bitmap.createScaledBitmap(bitmap,  600,392,true);
                 Log.d("LOG1",  " uri to bitmap ");
 
@@ -265,11 +226,11 @@ public class ListFragment extends Fragment {
                 Log.d("LOG1",  " ioexception e");
                 e.printStackTrace();
             }
-            if (selectedImageUri != null) {
+            if (imageurl != null) {
 
                 Log.d("LOG1",  " there is a uri ");
 
-                imageView.setImageURI(selectedImageUri);
+                imageView.setImageURI(imageurl);
                 imageView.setVisibility(View.VISIBLE);
 
             }else{
@@ -301,6 +262,7 @@ public class ListFragment extends Fragment {
         String moduleStr = moduleCode.getText().toString().trim();
         String descriptionStr = description.getText().toString().trim();
         String imageStr = "";
+        String userID="";
 
         if (nameStr.isEmpty()) {
             name.setError("Name field is required!");
@@ -328,7 +290,11 @@ public class ListFragment extends Fragment {
             return;
         }
 
-        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr);
+        userID=FirebaseDatabase.getInstance().getReference("Userdata")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getKey();
+        Log.d(TAG, "USERID= "+userID);
+
+        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr,userID);
 
         groupId = FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
@@ -344,7 +310,7 @@ public class ListFragment extends Fragment {
                     replaceFragment(new ProfileFragment());
                     Toast.makeText(getActivity(), "You have Successfully listed an item", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Failed to list an item", Toast.LENGTH_LONG).show();
+
                 }
             }
         });
@@ -360,6 +326,7 @@ public class ListFragment extends Fragment {
 
 
     private void uploadImage() {
+        Log.d(TAG, "uploadImage: sd");
         if (imageurl != null) {
             // Code for showing progressDialog while uploading
             ProgressDialog progressDialog
@@ -381,7 +348,7 @@ public class ListFragment extends Fragment {
                                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
-                                            Log.d(TAG, "Group ID:" + groupId);
+                                            Log.d(TAG, "Group ID:" + imageurl);
                                             //Adding that URL to Realtime database
                                             FirebaseDatabase.getInstance().getReference("Userdata")
                                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

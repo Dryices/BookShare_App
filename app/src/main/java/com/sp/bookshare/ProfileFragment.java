@@ -11,14 +11,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 
 public class ProfileFragment extends Fragment {
@@ -41,6 +46,11 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    RecyclerView recyclerView;
+    DatabaseReference database;
+    MyAdapter myAdapter;
+    ArrayList<GetUserdata> list;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -52,6 +62,49 @@ public class ProfileFragment extends Fragment {
         user= FirebaseAuth.getInstance().getCurrentUser();
         reference= FirebaseDatabase.getInstance().getReference("Users");
         userID=user.getUid();
+
+        recyclerView = view.findViewById(R.id.userList);
+        database = FirebaseDatabase.getInstance().getReference().child("Userdata"); //.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        list = new ArrayList<>();
+        myAdapter = new MyAdapter(getActivity(), list);
+        recyclerView.setAdapter(myAdapter);
+
+        database.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    GetUserdata userdata = ds.getValue(GetUserdata.class);
+                    list.add(userdata);
+                    //Log.d(TAG, "showData: name: " + userdata.getItemname());
+
+                }
+
+                myAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -70,39 +123,13 @@ public class ProfileFragment extends Fragment {
                 }
             }
 
+
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getActivity(),"An error has occurred!",Toast.LENGTH_LONG).show();
             }
         });
-        // initiating the tabhost
-        TabHost tabhost = (TabHost) view.findViewById(R.id.tabhost_id);
 
-        // setting up the tab host
-        tabhost.setup();
-
-        // Code for adding Tab 1 to the tabhost
-        TabHost.TabSpec spec = tabhost.newTabSpec("Listings");
-        spec.setContent(R.id.Listings);
-
-        // setting the name of the tab 1 as "Tab One"
-        spec.setIndicator("Listings");
-
-        // adding the tab to tabhost
-        tabhost.addTab(spec);
-
-        // Code for adding Tab 2 to the tabhost
-        spec = tabhost.newTabSpec("Ratings");
-        spec.setContent(R.id.Ratings);
-
-        // setting the name of the tab 1 as "Tab Two"
-        spec.setIndicator("Ratings");
-        tabhost.addTab(spec);
-
-        // Code for adding Tab 3 to the tabhost
-        spec = tabhost.newTabSpec("About");
-        spec.setContent(R.id.About);
-        spec.setIndicator("About");
-        tabhost.addTab(spec);
     }
 }

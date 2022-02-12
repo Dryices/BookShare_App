@@ -50,8 +50,6 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        String TAG = "test";
         recyclerView = view.findViewById(R.id.userList);
         database = FirebaseDatabase.getInstance().getReference().child("Userdata"); //.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         recyclerView.setHasFixedSize(true);
@@ -65,15 +63,11 @@ public class ExploreFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                //Do whatever further processing you need
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     GetUserdata userdata = ds.getValue(GetUserdata.class);
                     list.add(userdata);
-                    Log.d(TAG, "showData: name: " + userdata.getItemname());
-                    Log.d(TAG, "showData: price: " + userdata.getPrice());
-                    Log.d(TAG, "showData: category: " + userdata.getCategory());
-                    Log.d(TAG, "showData: module: " + userdata.getModulecode());
-                    Log.d(TAG, "showData: image: " + userdata.getimageURL());
+                    //Log.d("Getkey", "showData: key " + ds.getKey());
+
                 }
 
                 myAdapter.notifyDataSetChanged();

@@ -47,7 +47,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.modulecode.setText(user.getModulecode());
         String link=user.getimageURL();
         if(link.isEmpty()==false) {
-            Log.d("Test", " Image URL=" + link);
+            //Log.d("Test", " Image URL=" + link);
             Picasso.get().load(link).into(holder.itemImage);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -55,8 +55,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             public void onClick(View view) {
 
                 Intent intent = new Intent(view.getContext(), ListDetails.class);
-                intent.putExtra("name",user.getItemname());
-                Log.d("test",user.getItemname());
+                intent.putExtra("username",user.getItemname());
+                intent.putExtra("itemName",user.getItemname());
+                intent.putExtra("price",user.getPrice());
+                intent.putExtra("category",user.getCategory());
+                intent.putExtra("module",user.getModulecode());
+                intent.putExtra("description",user.getDescription());
+                intent.putExtra("image",user.getimageURL());
+                intent.putExtra("userID",user.getUserID());
+                //Log.d("Item name:",user.getItemname());
                 view.getContext().startActivity(intent);
             }
         });

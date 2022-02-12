@@ -11,60 +11,72 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="match_parent"
-            android:layout_height="660dp"
-            android:layout_weight="1"
-            android:fillViewport="true"
+
+        <ImageView
+            android:id="@+id/detail_image"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/emptyprofilepic" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="327dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="60dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <!-- Your Scrollview content goes here -->
+            app:layout_constraintTop_toBottomOf="@+id/detail_image">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="314dp"
-                    app:srcCompat="@drawable/emptyprofilepic" />
-
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/detail_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/about_email"
+                    android:id="@+id/detail_itemname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/detail_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/detail_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="20dp" />
 
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/mapView"
+                <TextView
+                    android:id="@+id/detail_module"
                     android:layout_width="match_parent"
-                    android:layout_height="156dp"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/detail_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="20dp" />
 
                 <!--click here to view previous image-->
 
@@ -72,8 +84,7 @@
 
 
             </LinearLayout>
-        </ScrollView>
-
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/chat_btn"
@@ -81,14 +92,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
+            android:layout_marginBottom="32dp"
             android:gravity="center"
             android:text="Chat"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-            app:layout_constraintVertical_bias="0.048" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

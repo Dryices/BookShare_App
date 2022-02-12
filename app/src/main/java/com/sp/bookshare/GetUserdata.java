@@ -2,7 +2,7 @@ package com.sp.bookshare;
 
 public class GetUserdata {
 
-    String itemName,price,category,moduleCode,imageURL;
+    String itemName,price,category,moduleCode,imageURL,description,userID;
 
     public String getItemname() {
         return itemName;
@@ -20,5 +20,7 @@ public class GetUserdata {
 
     public String getimageURL() { return imageURL; }
 
-    //public String getDescription() { return description; }
+    public String getDescription() { return description; }
+
+    public String getUserID() { return userID; }
 }
