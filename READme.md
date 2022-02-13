@@ -17,34 +17,46 @@ UI designed using Adobe XD.
 # References
 
 Splash Screen Music:
+
 https://freesound.org/people/tim.kahn/sounds/613725/#
 
 Login and Registration with Firebase:
+
 https://www.youtube.com/watch?v=Z-RE1QuUWPg
 
-Upload multiple userdata to Firebase:
+Upload userdata to Firebase:
+
 https://www.geeksforgeeks.org/how-to-save-data-to-the-firebase-realtime-database-in-android/?ref=gcse
 
 Navigation Drawer:
+
 https://youtu.be/fGcMLu1GJEc
 
 Navigation controller:
-![Tian Pok](https://github.com/liang799/Vigour)
+
+https://youtu.be/DI0NIk-7cz8
+
+[Tian Pok](https://github.com/liang799/Vigour)
+
 
 2D Graphics:
+
 https://www3.ntu.edu.sg/home/ehchua/programming/android/Android_2D.html
 
 Whatsapp Message Intent:
+
 https://stackoverflow.com/questions/15462874/sending-message-through-whatsapp
 
-Placepicker using Geocode:
+Placepicker using Geocoder:
+
 https://github.com/suchoX/PlacePicker
 
 Mapview:
+
 https://youtu.be/118wylgD_ig
 
-
 App logo:
-Adobe XD.
+
+https://www.adobe.com/sg/products/xd.html
 
 ![BookShare-logos](https://user-images.githubusercontent.com/87692678/151004852-a8a3485f-c7b1-497a-8a3a-b1af3bf0f32f.png)
