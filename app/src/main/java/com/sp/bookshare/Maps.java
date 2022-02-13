@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -26,15 +28,23 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class Maps extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private DatabaseReference database;
 
     private final static int LOCATION_REQUEST_CODE = 23;
 
@@ -42,13 +52,13 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        Log.d("Location","Begin code");
+        Log.d("Location", "Begin code");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    LOCATION_REQUEST_CODE);
-        }
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                LOCATION_REQUEST_CODE);
+    }
 
 
     @Override
@@ -67,7 +77,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
                         //                                          int[] grantResults)
                         // to handle the case where the user grants the permission. See the documentation
                         // for ActivityCompat#requestPermissions for more details.
-                        Log.d("Location","location request code2");
+                        Log.d("Location", "location request code2");
                         return;
                     }
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -120,7 +130,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
     }
 
 
-    private String getAddress(LatLng latLng){
+    private String getAddress(LatLng latLng) {
 
         Geocoder geocoder;
         List<Address> addresses;
@@ -143,15 +153,37 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
             ft.addToBackStack(null);
             DialogFragment dialogFragment = new ConfirmAddress();
 
-            Log.d("Location","confirmadress dialog");
+            Log.d("Location", "confirmadress dialog");
             Bundle args = new Bundle();
             args.putDouble("lat", latLng.latitude);
             args.putDouble("long", latLng.longitude);
             args.putString("address", address);
-            args.putString("postalCode",postalCode);
+            args.putString("postalCode", postalCode);
             dialogFragment.setArguments(args);
             dialogFragment.show(ft, "dialog");
-         return address;
+
+            /*Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("lat",latLng.latitude);
+            intent.putExtra("lon",latLng.longitude);
+            intent.putExtra("address", address);
+            startActivity(intent);*/
+
+            database = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            Map<String, Object> values = new HashMap<>();
+            values.put("latitude",latLng.latitude);
+            values.put("longitude", latLng.longitude);
+            values.put("address", address);
+            database.updateChildren(values).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                       Intent intent  = new Intent(Maps.this,MainActivity.class);
+                    } else {
+                        Toast.makeText(Maps.this, "Failed to set location", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            return address;
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(Maps.this, "An error has occurred", Toast.LENGTH_LONG).show();

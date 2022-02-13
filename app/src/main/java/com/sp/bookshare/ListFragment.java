@@ -115,15 +115,14 @@ public class ListFragment extends Fragment {
         category = view.findViewById(R.id.item_category);
         moduleCode = view.findViewById(R.id.item_code);
         description = view.findViewById(R.id.item_description);
-        map = view.findViewById(R.id.map_button);
-        list = view.findViewById(R.id.chat_btn);
+        list = view.findViewById(R.id.list_btn);
 
         list.setOnClickListener(onListItem);
-        map.setOnClickListener(onMap);
 
         //Select Image
         select = view.findViewById(R.id.select);
         imageView = view.findViewById(R.id.item_image);
+
 
 
         // click here to select image
@@ -247,13 +246,6 @@ public class ListFragment extends Fragment {
             ItemList();
         }
     };
-    private View.OnClickListener onMap = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), Maps.class);
-            startActivity(intent);
-        }
-    };
 
     public void ItemList() {
         String priceStr = price.getText().toString().trim();
@@ -323,7 +315,6 @@ public class ListFragment extends Fragment {
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
-
 
     private void uploadImage() {
         Log.d(TAG, "uploadImage: sd");

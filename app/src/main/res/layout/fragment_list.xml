@@ -87,18 +87,12 @@
                     tools:layout_editor_absoluteX="43dp"
                     tools:layout_editor_absoluteY="283dp" />
 
-                <Button
-                    android:id="@+id/map_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Set Location" />
-
             </LinearLayout>
         </ScrollView>
 
 
         <Button
-            android:id="@+id/chat_btn"
+            android:id="@+id/list_btn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"

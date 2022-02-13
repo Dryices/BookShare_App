@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,15 +63,17 @@ public class ConfirmAddress extends DialogFragment implements
         SelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),myAddress.getText().toString(),Toast.LENGTH_LONG).show();
                 getFragmentManager().beginTransaction().remove(mapFragment).commit();
-                dismiss();
+                Toast.makeText(getActivity(), "You have set your location to "+myAddress.getText().toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(),MainActivity.class);
+                startActivity(intent);
             }
         });
         ChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(mapFragment).commit();
+                Toast.makeText(getActivity(), "Select a different location", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });

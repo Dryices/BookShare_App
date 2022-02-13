@@ -51,7 +51,7 @@ public class ExploreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.userList);
-        database = FirebaseDatabase.getInstance().getReference().child("Userdata"); //.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        database = FirebaseDatabase.getInstance().getReference().child("Userdata");//child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
