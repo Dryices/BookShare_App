@@ -1,5 +1,7 @@
 package com.sp.bookshare;
 
+import android.util.Log;
+
 public class Userdata {
     public String itemName,price, category, moduleCode, description, imageURL,userID;
 
@@ -15,6 +17,7 @@ public class Userdata {
         this.description = description;
         this.imageURL = imageURL;
         this.userID=userID;
+
     }
 }
 

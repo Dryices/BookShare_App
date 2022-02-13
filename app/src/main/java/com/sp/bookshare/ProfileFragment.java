@@ -1,6 +1,7 @@
 package com.sp.bookshare;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView name, email, phone,logout;
+    private TextView name, email, phone, logout;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
@@ -55,16 +56,16 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        name=view.findViewById(R.id.profile_name);
-        email=view.findViewById(R.id.profile_email);
-        phone=view.findViewById(R.id.profile_phone);
+        name = view.findViewById(R.id.profile_name);
+        email = view.findViewById(R.id.profile_email);
+        phone = view.findViewById(R.id.profile_phone);
 
-        user= FirebaseAuth.getInstance().getCurrentUser();
-        reference= FirebaseDatabase.getInstance().getReference("Users");
-        userID=user.getUid();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        userID = user.getUid();
 
         recyclerView = view.findViewById(R.id.userList);
-        database = FirebaseDatabase.getInstance().getReference().child("Userdata"); //.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        database = FirebaseDatabase.getInstance().getReference().child("Userdata");//.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -72,62 +73,46 @@ public class ProfileFragment extends Fragment {
         myAdapter = new MyAdapter(getActivity(), list);
         recyclerView.setAdapter(myAdapter);
 
-        database.addChildEventListener(new ChildEventListener() {
+        database.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     GetUserdata userdata = ds.getValue(GetUserdata.class);
                     list.add(userdata);
-                    //Log.d(TAG, "showData: name: " + userdata.getItemname());
+                    //Log.d("Getkey", "showData: key " + ds.getKey());
 
                 }
-
                 myAdapter.notifyDataSetChanged();
             }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "An error has occurred!", Toast.LENGTH_LONG).show();
             }
         });
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Users userProfile=snapshot.getValue(Users.class);
+                Users userProfile = snapshot.getValue(Users.class);
 
-                if (userProfile!=null){
-                    String nameStr= userProfile.name;
-                    String emailStr= userProfile.email;
-                    String phoneStr= userProfile.phone;
+                if (userProfile != null) {
+                    String nameStr = userProfile.name;
+                    String emailStr = userProfile.email;
+                    String phoneStr = userProfile.phone;
 
-                    name.setText("Name: "+nameStr);
-                    email.setText("Email: "+emailStr);
-                    phone.setText("Phone: "+phoneStr);
+                    name.setText("Name: " + nameStr);
+                    email.setText("Email: " + emailStr);
+                    phone.setText("Phone: " + phoneStr);
 
                 }
             }
 
 
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(),"An error has occurred!",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "An error has occurred!", Toast.LENGTH_LONG).show();
             }
         });
 

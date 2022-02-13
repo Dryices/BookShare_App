@@ -51,12 +51,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         GetUserdata user = list.get(position);
 
 
+
         holder.username.setText(user.getItemname());
         holder.price.setText(user.getPrice());
         holder.itemname.setText(user.getItemname());
         holder.category.setText(user.getCategory());
         holder.modulecode.setText(user.getModulecode());
         String link = user.getimageURL();
+
         if (link.isEmpty() == false) {
             //Log.d("Test", " Image URL=" + link);
             Picasso.get().load(link).into(holder.itemImage);

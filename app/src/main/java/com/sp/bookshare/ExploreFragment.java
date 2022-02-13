@@ -66,7 +66,7 @@ public class ExploreFragment extends Fragment {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     GetUserdata userdata = ds.getValue(GetUserdata.class);
                     list.add(userdata);
-                    //Log.d("Getkey", "showData: key " + ds.getKey());
+                    Log.d("Getkey", "showData: key " + ds.getKey());
 
                 }
 
