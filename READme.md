@@ -28,6 +28,9 @@ https://youtu.be/fGcMLu1GJEc
 2D Graphics:
 https://www3.ntu.edu.sg/home/ehchua/programming/android/Android_2D.html
 
+Whatsapp Message Intent:
+https://stackoverflow.com/questions/15462874/sending-message-through-whatsapp
+
 App logo:
 Adobe XD.
 
