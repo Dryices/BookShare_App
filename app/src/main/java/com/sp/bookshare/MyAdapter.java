@@ -52,7 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
 
-        holder.username.setText(user.getItemname());
+        holder.username.setText(user.getSeller());
         holder.price.setText(user.getPrice());
         holder.itemname.setText(user.getItemname());
         holder.category.setText(user.getCategory());
@@ -91,7 +91,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
                 Intent intent = new Intent(view.getContext(), ListDetails.class);
-                intent.putExtra("username", user.getItemname());
+                intent.putExtra("username", user.getSeller());
                 intent.putExtra("itemName", user.getItemname());
                 intent.putExtra("price", user.getPrice());
                 intent.putExtra("category", user.getCategory());

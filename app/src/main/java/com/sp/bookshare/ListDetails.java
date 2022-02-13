@@ -85,7 +85,7 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
         Bundle extras = getIntent().getExtras();
         username.setText("Username: " + extras.getString("username"));
         itemname.setText("Itemname: " + extras.getString("itemName"));
-        price.setText("Price:$" + extras.getString("price"));
+        price.setText("Price: $" + extras.getString("price"));
         category.setText("Category: " + extras.getString("category"));
         moduleCode.setText("Module: " + extras.getString("module"));
         description.setText("Description: " + extras.getString("description"));

@@ -40,7 +40,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -61,6 +64,7 @@ public class ListFragment extends Fragment {
     File Destination;
     private static final String TAG = "ListFragment";
     String groupId = "";
+    String seller="";
 
     private static final int GalleryPick = 1;
     private static final int CAMERA_REQUEST = 100;
@@ -136,6 +140,20 @@ public class ListFragment extends Fragment {
                         .compress(508)			//Final image size will be less than 0.5 MB(Optional)
                         .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                         .start();
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot ds) {
+                seller = ds.child("name").getValue(String.class);
+                Log.d(TAG, "USERID= "+seller);
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "An error has occurred!", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -247,6 +265,7 @@ public class ListFragment extends Fragment {
         }
     };
 
+
     public void ItemList() {
         String priceStr = price.getText().toString().trim();
         String nameStr = name.getText().toString().trim();
@@ -255,6 +274,9 @@ public class ListFragment extends Fragment {
         String descriptionStr = description.getText().toString().trim();
         String imageStr = "";
         String userID="";
+        String sellerStr;
+
+
 
         if (nameStr.isEmpty()) {
             name.setError("Name field is required!");
@@ -282,11 +304,13 @@ public class ListFragment extends Fragment {
             return;
         }
 
-        userID=FirebaseDatabase.getInstance().getReference("Userdata")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getKey();
-        Log.d(TAG, "USERID= "+userID);
+        userID=FirebaseDatabase.getInstance().getReference("Userdata").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getKey();
 
-        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr,userID);
+
+        Log.d(TAG, "USERID= "+seller);
+        sellerStr=seller;
+
+        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr,userID,sellerStr);
 
         groupId = FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
