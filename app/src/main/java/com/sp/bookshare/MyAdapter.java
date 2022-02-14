@@ -11,11 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.api.LogDescriptor;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,7 +48,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         GetUserdata user = list.get(position);
 
 
-
         holder.username.setText(user.getSeller());
         holder.price.setText(user.getPrice());
         holder.itemname.setText(user.getItemname());
@@ -78,8 +74,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         lat = dataSnapshot.child("latitude").getValue(Double.class);
                         lon = dataSnapshot.child("longitude").getValue(Double.class);
 
+
                         Log.d("Check23", "onClick: " + lat);
                         Log.d("Check23", "onClick: " + lon);
+
+
+                        Intent intent = new Intent(view.getContext(), ListDetails.class);
+                        intent.putExtra("username", user.getSeller());
+                        intent.putExtra("itemName", user.getItemname());
+                        intent.putExtra("price", user.getPrice());
+                        intent.putExtra("category", user.getCategory());
+                        intent.putExtra("module", user.getModulecode());
+                        intent.putExtra("description", user.getDescription());
+                        intent.putExtra("image", user.getimageURL());
+                        intent.putExtra("userID", user.getUserID());
+                        intent.putExtra("LATITUDE", lat);
+                        intent.putExtra("LONGITUDE", lon);
+                        Log.d("Check24", "onClick: " + lat);
+                        Log.d("Check24", "onClick: " + lon);
+                        view.getContext().startActivity(intent);
 
                     }
 
@@ -90,19 +103,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 });
 
 
-                Intent intent = new Intent(view.getContext(), ListDetails.class);
-                intent.putExtra("username", user.getSeller());
-                intent.putExtra("itemName", user.getItemname());
-                intent.putExtra("price", user.getPrice());
-                intent.putExtra("category", user.getCategory());
-                intent.putExtra("module", user.getModulecode());
-                intent.putExtra("description", user.getDescription());
-                intent.putExtra("image", user.getimageURL());
-                intent.putExtra("userID", user.getUserID());
-                intent.putExtra("LATITUDE", lat);
-                intent.putExtra("LONGITUDE", lon);
-                //Log.d("Item name:",user.getItemname());
-                view.getContext().startActivity(intent);
             }
         });
 

@@ -11,12 +11,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -24,9 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,10 +39,9 @@ import java.util.Map;
 
 public class Maps extends FragmentActivity implements OnMapReadyCallback {
 
+    private final static int LOCATION_REQUEST_CODE = 23;
     private GoogleMap mMap;
     private DatabaseReference database;
-
-    private final static int LOCATION_REQUEST_CODE = 23;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,14 +165,14 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
 
             database = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
             Map<String, Object> values = new HashMap<>();
-            values.put("latitude",latLng.latitude);
+            values.put("latitude", latLng.latitude);
             values.put("longitude", latLng.longitude);
             values.put("address", address);
             database.updateChildren(values).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                       Intent intent  = new Intent(Maps.this,MainActivity.class);
+                        Intent intent = new Intent(Maps.this, MainActivity.class);
                     } else {
                         Toast.makeText(Maps.this, "Failed to set location", Toast.LENGTH_SHORT).show();
                     }

@@ -1,11 +1,6 @@
 package com.sp.bookshare;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,12 +27,10 @@ import java.net.URL;
 
 public class AboutFragment extends Fragment {
 
+    String name;
+    Handler mainHandler = new Handler();
     private TextView email;
     private ImageView image;
-    String name;
-
-    Handler mainHandler =  new Handler();
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,10 +43,10 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View v =  inflater.inflate(R.layout.fragment_about, container, false);
-        email=v.findViewById(R.id.about_email1);
-        image=v.findViewById(R.id.about_image);
-       return v;
+        View v = inflater.inflate(R.layout.fragment_about, container, false);
+        email = v.findViewById(R.id.about_email1);
+        image = v.findViewById(R.id.about_image);
+        return v;
     }
 
     @Override
@@ -64,7 +61,7 @@ public class AboutFragment extends Fragment {
         String data = "";
 
         @Override
-        public void run(){
+        public void run() {
 
             mainHandler.post(new Runnable() {
                 @Override
@@ -82,18 +79,18 @@ public class AboutFragment extends Fragment {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
 
-                while((line = bufferedReader.readLine()) != null){
+                while ((line = bufferedReader.readLine()) != null) {
                     data = data + line;
                 }
 
-                if (!data.isEmpty()){
+                if (!data.isEmpty()) {
                     JSONObject jsonObject = new JSONObject(data);
                     JSONArray users = jsonObject.getJSONArray("BookShare");
                     Log.d("LOG", String.valueOf(users));
-                    for(int  i =0;i< users.length();i++){
+                    for (int i = 0; i < users.length(); i++) {
                         JSONObject names = users.getJSONObject(i);
                         //JSONObject images = users.getJSONObject(i);
-                         name = names.getString("email");
+                        name = names.getString("email");
                         //String image = names.getString("image");
 
                         Log.d("TEST2", name);

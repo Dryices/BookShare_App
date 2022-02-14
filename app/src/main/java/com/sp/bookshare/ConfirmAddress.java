@@ -29,8 +29,6 @@ public class ConfirmAddress extends DialogFragment implements
     public Activity c;
     public Dialog d;
     public Button yes, no;
-
-    private GoogleMap mMap;
     MapView mapView;
     Double Lat;
     Double Long;
@@ -38,6 +36,9 @@ public class ConfirmAddress extends DialogFragment implements
     TextView myAddress;
     Button SelectBtn;
     Button ChangeBtn;
+    MapFragment mapFragment;
+    private GoogleMap mMap;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +47,13 @@ public class ConfirmAddress extends DialogFragment implements
         Address = getArguments().getString("address");
 
     }
-    MapFragment mapFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.custom_confirm_address, container, false);
-        myAddress=(TextView)v.findViewById(R.id.myAddress);
-        SelectBtn=(Button) v.findViewById(R.id.Select);
-        ChangeBtn=(Button) v.findViewById(R.id.Change);
-
+        myAddress = (TextView) v.findViewById(R.id.myAddress);
+        SelectBtn = (Button) v.findViewById(R.id.Select);
+        ChangeBtn = (Button) v.findViewById(R.id.Change);
 
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapp);
@@ -64,8 +64,8 @@ public class ConfirmAddress extends DialogFragment implements
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().remove(mapFragment).commit();
-                Toast.makeText(getActivity(), "You have set your location to "+myAddress.getText().toString(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(),MainActivity.class);
+                Toast.makeText(getActivity(), "You have set your location to " + myAddress.getText().toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -106,15 +106,15 @@ public class ConfirmAddress extends DialogFragment implements
         myAddress.setText(Address);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(new LatLng(Lat,Long));
+        markerOptions.position(new LatLng(Lat, Long));
 
         markerOptions.title(Address);
         mMap.clear();
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
-                new LatLng(Lat,Long), 16f);
+                new LatLng(Lat, Long), 16f);
         mMap.animateCamera(location);
         mMap.addMarker(markerOptions);
-        Log.d("status","success");
+        Log.d("status", "success");
     }
 
 }

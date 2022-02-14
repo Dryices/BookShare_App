@@ -14,7 +14,7 @@
         android:layout_marginTop="188dp"
         android:width="380dp"
         android:ems="10"
-        
+
         android:hint="Name"
         android:inputType="textPersonName"
         android:maxLength="20"
@@ -31,7 +31,7 @@
         android:layout_marginTop="20dp"
         android:width="380dp"
         android:ems="10"
-        
+
         android:hint="Email"
         android:inputType="textPersonName"
         android:maxLength="50"
@@ -47,7 +47,7 @@
         android:layout_marginTop="20dp"
         android:width="380dp"
         android:ems="10"
-        
+
         android:hint="Phone Number"
         android:inputType="number"
         android:maxLength="8"

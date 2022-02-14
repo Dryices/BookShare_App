@@ -8,7 +8,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashScreen extends AppCompatActivity {
@@ -20,12 +19,12 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
 
-        image=findViewById(R.id.splash_image);
+        image = findViewById(R.id.splash_image);
 
         MediaPlayer music = MediaPlayer.create(SplashScreen.this, R.raw.trimmedsplashmusic);
         music.start();
 
-        Animation animation = AnimationUtils.loadAnimation(this,R.anim.bounce);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
         image.startAnimation(animation);
         new Handler().postDelayed(new Runnable() {
@@ -35,7 +34,7 @@ public class SplashScreen extends AppCompatActivity {
                 music.stop();
                 finish();
             }
-        },1000);
+        }, 4000);
 
     }
 }

@@ -1,55 +1,52 @@
 package com.sp.bookshare;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 public class ListDetails extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
     MapView mapView;
+    DatabaseReference database;
+    private GoogleMap mMap;
     private LatLng coordinate;
     private double lat, lon;
     private String address;
-    DatabaseReference database;
-
     private TextView username, itemname, price, category, moduleCode, description, location;
     private ImageView itemimage;
     private Button button;
     private String userID, userPhone = "", messagestr;
+    private View.OnClickListener chatOpt = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            chatDialog();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +55,10 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
 
         database = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        lat=getIntent().getDoubleExtra("LATITUDE",0);
-        lon=getIntent().getDoubleExtra("LONGITUDE",0);
+        lat = getIntent().getDoubleExtra("LATITUDE", 0);
+        lon = getIntent().getDoubleExtra("LONGITUDE", 0);
+        Log.d("Check21", "onClick: " + lat);
+        Log.d("Check21", "onClick: " + lon);
 
 
         mapView = findViewById(R.id.mapDetail);
@@ -99,8 +98,7 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userPhone = dataSnapshot.child("phone").getValue(String.class);
                 address = dataSnapshot.child("address").getValue(String.class);
-                location.setText("Meet-up location : " +address);
-                //Log.d("Check", "onClick: " + userPhone);
+                location.setText("Meet-up location : " + address);
             }
 
             @Override
@@ -115,14 +113,6 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
         }
 
     }
-
-    private View.OnClickListener chatOpt = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            chatDialog();
-        }
-    };
-
 
     private void chatDialog() {
         String options[] = {"Whatsapp", "Telegram"};
@@ -171,6 +161,8 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         coordinate = new LatLng(lat, lon);
+        Log.d("Check21", "coordinate: " + coordinate);
+
 
         Marker restaurant = mMap.addMarker(new MarkerOptions().position(coordinate).title("Location"));
 

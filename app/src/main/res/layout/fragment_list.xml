@@ -14,7 +14,7 @@
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="620dp"
             android:layout_weight="1"
             android:fillViewport="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,8 @@
                     android:layout_marginTop="20dp"
                     android:ems="10"
                     android:hint="Item name"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:paddingBottom="20dp" />
 
                 <EditText
                     android:id="@+id/item_price"
@@ -57,7 +58,8 @@
                     android:ems="10"
                     android:hint="Price"
                     android:inputType="number"
-                    android:maxLength="3" />
+                    android:maxLength="3"
+                    android:paddingBottom="20dp" />
 
 
                 <EditText
@@ -66,7 +68,8 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Category"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:paddingBottom="20dp" />
 
                 <EditText
                     android:id="@+id/item_code"
@@ -74,16 +77,18 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Module Code"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:paddingBottom="20dp" />
 
                 <EditText
                     android:id="@+id/item_description"
                     android:layout_width="match_parent"
-                    android:layout_height="122dp"
+                    android:layout_height="500dp"
                     android:ems="10"
                     android:gravity="start|top"
                     android:hint="Description"
                     android:inputType="textMultiLine"
+                    android:paddingBottom="20dp"
                     tools:layout_editor_absoluteX="43dp"
                     tools:layout_editor_absoluteY="283dp" />
 

@@ -21,33 +21,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
+    Intent intent;
     private TextView back;
-    private EditText name,email,phone,password;
+    private EditText name, email, phone, password;
     private ProgressBar progressBar;
     private Button register;
-    Intent intent;
-
     private FirebaseAuth mAuth;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-
-
-        back=findViewById(R.id.back_register);
-        name=findViewById(R.id.name_id);
-        email=findViewById(R.id.email_id3);
-        phone=findViewById(R.id.phone_id);
-        password=findViewById(R.id.password_id);
-        register=findViewById(R.id.button_register);
-        progressBar=findViewById(R.id.progressBar2);
-
-        back.setOnClickListener(goBack);
-        register.setOnClickListener(onRegister);
-        mAuth = FirebaseAuth.getInstance();
-    }
-
     private View.OnClickListener goBack = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -61,6 +40,25 @@ public class Register extends AppCompatActivity {
             registerUser();
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+
+
+        back = findViewById(R.id.back_register);
+        name = findViewById(R.id.name_id);
+        email = findViewById(R.id.email_id3);
+        phone = findViewById(R.id.phone_id);
+        password = findViewById(R.id.password_id);
+        register = findViewById(R.id.button_register);
+        progressBar = findViewById(R.id.progressBar2);
+
+        back.setOnClickListener(goBack);
+        register.setOnClickListener(onRegister);
+        mAuth = FirebaseAuth.getInstance();
+    }
 
     private void registerUser() {
         String nameStr = name.getText().toString().trim();
@@ -118,21 +116,21 @@ public class Register extends AppCompatActivity {
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(Register.this,"User has been registered successfully!",Toast.LENGTH_LONG).show();
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(Register.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
                                         intent = new Intent(Register.this, Login.class);
                                         startActivity(intent);
 
                                         // redirect to log in activity
                                     } else {
-                                        Toast.makeText(Register.this,"Failed to register! Please try again!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Register.this, "Failed to register! Please try again!", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 }
                             });
-                        }else {
-                            Toast.makeText(Register.this,"Failed to register! Please try again!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(Register.this, "Failed to register! Please try again!", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }

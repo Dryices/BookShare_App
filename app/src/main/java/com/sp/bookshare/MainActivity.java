@@ -5,7 +5,6 @@ import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavControlle
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,17 +21,17 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
+    NavigationView navigationView;
     private DrawerLayout drawer;
     private AppBarConfiguration appBarConfiguration;
     private MenuItem logout;
-    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigationView=findViewById(R.id.logout);
+        navigationView = findViewById(R.id.logout);
 
         /* ---- Binding Views ---- */
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -40,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-        NavController navController = Navigation.findNavController(this,  R.id.fragment_container);
+        NavController navController = Navigation.findNavController(this, R.id.fragment_container);
 
         /* ---- Navigation using NavGraph ---- */
         appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.explore, R.id.chat, R.id.list,R.id.profile)
+                new AppBarConfiguration.Builder(R.id.explore, R.id.list, R.id.profile)
                         .setDrawerLayout(drawer).build(); //up button will not be displayed for these destinations
         setSupportActionBar(toolbar);
         setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -55,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
-            Toast.makeText(this,"You have successfully logged out!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You have successfully logged out!", Toast.LENGTH_LONG).show();
             return true;
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.fragment_container);

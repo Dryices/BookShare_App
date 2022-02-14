@@ -1,27 +1,14 @@
-
 package com.sp.bookshare;
 
 import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,12 +16,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,42 +42,39 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.UUID;
 
 public class ListFragment extends Fragment {
 
-    ImageView imageView;
-    File Destination;
     private static final String TAG = "ListFragment";
-    String groupId = "";
-    String seller="";
-
     private static final int GalleryPick = 1;
     private static final int CAMERA_REQUEST = 100;
     private static final int STORAGE_REQUEST = 200;
     private static final int PICK_Camera_IMAGE = 2;
+    public DrawerLayout drawerLayout;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
+    ImageView imageView;
+    File Destination;
+    String groupId = "";
+    String seller = "";
     String cameraPermission[];
     String storagePermission[];
-
-
     EditText name, price, category, moduleCode, description;
     Button select, list, map;
     Uri imageurl;
-
     Bitmap bitmap;
-
-
     //Firebase Storage declarations
     FirebaseStorage storage;
     StorageReference storageReference;
+    private View.OnClickListener onListItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ItemList();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,9 +88,6 @@ public class ListFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_list, container, false);
     }
-
-    public DrawerLayout drawerLayout;
-    public ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -128,7 +116,6 @@ public class ListFragment extends Fragment {
         imageView = view.findViewById(R.id.item_image);
 
 
-
         // click here to select image
         select.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,9 +123,9 @@ public class ListFragment extends Fragment {
                 //showImagePicDialog();
 
                 ImagePicker.with(ListFragment.this)
-                        .crop(16f, 9f)    			//Crop image(Optional), Check Customization for more option
-                        .compress(508)			//Final image size will be less than 0.5 MB(Optional)
-                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                        .crop(16f, 16f)                //Crop image(Optional), Check Customization for more option
+                        .compress(508)            //Final image size will be less than 0.5 MB(Optional)
+                        .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
                         .start();
             }
         });
@@ -147,7 +134,7 @@ public class ListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
                 seller = ds.child("name").getValue(String.class);
-                Log.d(TAG, "USERID= "+seller);
+                Log.d(TAG, "USERID= " + seller);
             }
 
 
@@ -157,7 +144,6 @@ public class ListFragment extends Fragment {
             }
         });
     }
-
 
     // checking storage permissions
     private Boolean checkStoragePermission() {
@@ -233,38 +219,30 @@ public class ListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             imageurl = data.getData();
-            Log.d("LOG1",  " data.getdata ");
+            Log.d("LOG1", " data.getdata ");
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageurl);
                 //bitmap = Bitmap.createScaledBitmap(bitmap,  600,392,true);
-                Log.d("LOG1",  " uri to bitmap ");
+                Log.d("LOG1", " uri to bitmap ");
 
             } catch (IOException e) {
-                Log.d("LOG1",  " ioexception e");
+                Log.d("LOG1", " ioexception e");
                 e.printStackTrace();
             }
             if (imageurl != null) {
 
-                Log.d("LOG1",  " there is a uri ");
+                Log.d("LOG1", " there is a uri ");
 
                 imageView.setImageURI(imageurl);
                 imageView.setVisibility(View.VISIBLE);
 
-            }else{
-                Log.d("LOG1",  " there is no uri ");
+            } else {
+                Log.d("LOG1", " there is no uri ");
             }
-        }else{
-            Log.d("LOG1",  " result code not ok ");
+        } else {
+            Log.d("LOG1", " result code not ok ");
         }
     }
-
-    private View.OnClickListener onListItem = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ItemList();
-        }
-    };
-
 
     public void ItemList() {
         String priceStr = price.getText().toString().trim();
@@ -273,9 +251,8 @@ public class ListFragment extends Fragment {
         String moduleStr = moduleCode.getText().toString().trim();
         String descriptionStr = description.getText().toString().trim();
         String imageStr = "";
-        String userID="";
+        String userID = "";
         String sellerStr;
-
 
 
         if (nameStr.isEmpty()) {
@@ -304,13 +281,13 @@ public class ListFragment extends Fragment {
             return;
         }
 
-        userID=FirebaseDatabase.getInstance().getReference("Userdata").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getKey();
+        userID = FirebaseDatabase.getInstance().getReference("Userdata").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getKey();
 
 
-        Log.d(TAG, "USERID= "+seller);
-        sellerStr=seller;
+        Log.d(TAG, "USERID= " + seller);
+        sellerStr = seller;
 
-        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr,userID,sellerStr);
+        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr, userID, sellerStr);
 
         groupId = FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();

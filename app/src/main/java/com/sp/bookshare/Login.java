@@ -2,13 +2,10 @@ package com.sp.bookshare;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,33 +21,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
-    private TextView register,forgot;
-    private EditText email,password;
+    private TextView register, forgot;
+    private EditText email, password;
     private Button signIn;
     private Intent intent;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-
-        register=findViewById(R.id.register_login);
-        forgot=findViewById(R.id.forgot_login);
-        signIn=findViewById(R.id.button_login);
-        email=findViewById(R.id.email_id2);
-        password=findViewById(R.id.password_id2);
-        progressBar=findViewById(R.id.progressBar);
-        mAuth=FirebaseAuth.getInstance();
-
-        register.setOnClickListener(onNewRegister);
-        forgot.setOnClickListener(onForgot);
-        signIn.setOnClickListener(onLogin);
-    }
-
     private View.OnClickListener onNewRegister = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -67,7 +44,6 @@ public class Login extends AppCompatActivity {
             startActivity(intent);
         }
     };
-
     private View.OnClickListener onLogin = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -75,7 +51,26 @@ public class Login extends AppCompatActivity {
         }
     };
 
-    private void userLogin(){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+
+        register = findViewById(R.id.register_login);
+        forgot = findViewById(R.id.forgot_login);
+        signIn = findViewById(R.id.button_login);
+        email = findViewById(R.id.email_id2);
+        password = findViewById(R.id.password_id2);
+        progressBar = findViewById(R.id.progressBar);
+        mAuth = FirebaseAuth.getInstance();
+
+        register.setOnClickListener(onNewRegister);
+        forgot.setOnClickListener(onForgot);
+        signIn.setOnClickListener(onLogin);
+    }
+
+    private void userLogin() {
         String emailStr = email.getText().toString().trim();
         String passwordStr = password.getText().toString().trim();
 
@@ -108,14 +103,14 @@ public class Login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                            if(user.isEmailVerified()) {
+                            if (user.isEmailVerified()) {
                                 //redirect to home page
                                 progressBar.setVisibility(View.GONE);
                                 intent = new Intent(Login.this, MainActivity.class);
                                 startActivity(intent);
-                            }else {
+                            } else {
                                 user.sendEmailVerification();
-                                Toast.makeText(Login.this,"Check your email to verify your account!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Login.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
                                 progressBar.setVisibility(View.GONE);
                             }
                         } else {
