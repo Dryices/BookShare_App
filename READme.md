@@ -1,7 +1,7 @@
 # BookShare 
 BookShare is an app that allows users to resell their used books and course notes to others in Singapore. It is inspired by [Carousell](https://www.Carousell.com) as it has
 a similar concept where users can sell and buy items on a unified platform. The main difference of BookShare is that it allows users to exclusively sell educational materials 
-to each other. The main target of the app is students, teachers, lecturers, professors and parents. 
+to each other. The main target of the app are students, teachers, lecturers, professors and parents. 
 
 Most students in Singapore use assessment books, course notes or online resources for use in their learning in their educations. Currently pre- and post-secondary institution continue using physical books and notes. 
 The problem is once students finish using these books or notes, they will mostly likely be collecting dust at home while some will be sold or donated to their friends who need it.  
