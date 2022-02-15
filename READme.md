@@ -55,6 +55,10 @@ Mapview:
 
 https://youtu.be/118wylgD_ig
 
+JSON Parsing:
+
+https://youtu.be/y2xtLqP8dSQ
+
 App logo:
 
 https://www.adobe.com/sg/products/xd.html
