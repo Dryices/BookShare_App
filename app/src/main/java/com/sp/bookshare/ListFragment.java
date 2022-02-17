@@ -287,10 +287,13 @@ public class ListFragment extends Fragment {
         Log.d(TAG, "USERID= " + seller);
         sellerStr = seller;
 
-        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr, userID, sellerStr);
-
         groupId = FirebaseDatabase.getInstance().getReference("Userdata")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
+        String listStr=groupId;
+
+        Userdata userData = new Userdata(nameStr, priceStr, categoryStr, moduleStr, descriptionStr, imageStr, userID, sellerStr,listStr);
+
+
 
         //Log.d(TAG, "GroupID = "+ groupId);
 
@@ -302,6 +305,7 @@ public class ListFragment extends Fragment {
                 if (task.isSuccessful()) {
                     replaceFragment(new ProfileFragment());
                     Toast.makeText(getActivity(), "You have Successfully listed an item", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onComplete: "+listStr);
                 } else {
 
                 }

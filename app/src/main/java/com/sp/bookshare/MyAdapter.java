@@ -53,6 +53,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.itemname.setText(user.getItemname());
         holder.category.setText(user.getCategory());
         holder.modulecode.setText(user.getModulecode());
+
         String link = user.getimageURL();
 
         if (link.isEmpty() == false) {
@@ -90,7 +91,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         intent.putExtra("userID", user.getUserID());
                         intent.putExtra("LATITUDE", lat);
                         intent.putExtra("LONGITUDE", lon);
-                        Log.d("Check24", "onClick: " + lat);
+                        intent.putExtra("itemID", user.getList());
+                        Log.d("Check24", "oniditem: " + user.getList());
+                        Log.d("Check24", "oniditem: " + user.getUserID());
                         Log.d("Check24", "onClick: " + lon);
                         view.getContext().startActivity(intent);
 

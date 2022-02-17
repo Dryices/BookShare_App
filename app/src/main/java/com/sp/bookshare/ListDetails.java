@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,8 +40,8 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
     private String address;
     private TextView username, itemname, price, category, moduleCode, description, location;
     private ImageView itemimage;
-    private Button button;
-    private String userID, userPhone = "", messagestr;
+    private Button button,buttondelete;
+    private String userID,itemID, userPhone = "", messagestr;
     private View.OnClickListener chatOpt = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -53,7 +55,7 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_details);
 
-        database = FirebaseDatabase.getInstance().getReference().child("Users");
+        database = FirebaseDatabase.getInstance().getReference().child("Userdata");
 
         lat = getIntent().getDoubleExtra("LATITUDE", 0);
         lon = getIntent().getDoubleExtra("LONGITUDE", 0);
@@ -72,11 +74,33 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
         itemimage = findViewById(R.id.detail_image);
         button = findViewById(R.id.chat_btn);
         button.setOnClickListener(chatOpt);
+        buttondelete=findViewById(R.id.delete_btn);
+        buttondelete.setOnClickListener(onDelete);
         listdetail();
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
     }
+
+    private View.OnClickListener onDelete = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            String checkUser = database.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getKey();
+            Bundle extras = getIntent().getExtras();
+            userID = extras.getString("userID");
+            Log.d("Check21", "checkuser: " + checkUser);
+
+            itemID = extras.getString("itemID");
+            Log.d("Check21", "itemidcheck: " + itemID);
+            if (checkUser.equals(userID)) {
+                database.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(itemID).removeValue();
+            } else
+                Toast.makeText(ListDetails.this, "This is not your item!", Toast.LENGTH_LONG).show();
+        }
+       };
+
+
 
     public void listdetail() {
 
