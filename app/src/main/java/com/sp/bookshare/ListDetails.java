@@ -114,10 +114,10 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
         description.setText("Description: " + extras.getString("description"));
         userID = extras.getString("userID");
         imageURL = extras.getString("image");
-
+        DatabaseReference databaseUser= FirebaseDatabase.getInstance().getReference().child("Users");
         messagestr = "Bookshare: I am interested in buying " + extras.getString("itemName");
 
-        database.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseUser.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userPhone = dataSnapshot.child("phone").getValue(String.class);
@@ -141,6 +141,7 @@ public class ListDetails extends AppCompatActivity implements OnMapReadyCallback
     private void chatDialog() {
         String options[] = {"Whatsapp", "Telegram"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Log.d("testg", "chatDialog: "+userPhone);
         builder.setTitle("Select contact option with phone number +65 " + userPhone);
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
